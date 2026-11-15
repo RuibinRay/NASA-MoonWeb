@@ -1,7 +1,7 @@
 // MOONKEEPER: Beyond Earth — the page's behaviour: the scroll-driven films, the three worlds, the exhibits, the sound.
 // Scrolling drives everything and works backwards as well as forwards. If the 3D scene, a film or the animation
 // library fails to load, the page is still readable and every button still works.
-import { WORLDS, TIMELINE, ROOMS, JOBS, MOON_REEL, MARS_REEL, MARS_CARDS, GAME_TABS, MODES, KEYS, FLOW, SI_LIST, ARCH, COMPARE, QUIZ, KIND, SOURCES, THEMES, REGO_CUES, REGO_SPOTS, GAME } from './data.js';
+import { WORLDS, TIMELINE, ROOMS, JOBS, MOON_REEL, MARS_REEL, MARS_CARDS, GAME_TABS, MODES, KEYS, FLOW, SI_LIST, ARCH, COMPARE, QUIZ, KIND, SOURCES, THEMES, REGO_CUES, REGO_SPOTS, GAME } from './data.js?v=b6';
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
@@ -46,11 +46,17 @@ sections.forEach((s) => { const li = el('li'), a = el('a', '', `<span>${s.datase
 // ------------------------------------------------------------------ films: fetched only when they come near
 // A film that follows the scroll is never "played", and iPhones and iPads draw nothing until a film has played once:
 // so each one is started and stopped again, silently, as soon as it has loaded.
-const prime = (v) => { if (v._primed || !v.classList.contains('scrub')) return; v._primed = true; const p = v.play(); if (p && p.then) p.then(() => v.pause()).catch(() => {}); };
+const prime = (v) => { if (v._primed || v._priming || !v.classList.contains('scrub')) return; v._priming = true; let p = null; try { p = v.play(); } catch (e) { p = null; }
+  if (p && p.then) p.then(() => { v._primed = true; v._priming = false; v.pause(); }).catch(() => { v._priming = false; }); else { v._primed = true; v._priming = false; } };
+// If the browser refused the silent start (Low Power Mode, or auto-play switched off), the first click, tap or key does it.
+const nudge = () => { for (const v of $$('video.scrub')) if (v.getAttribute('src') && !v._primed) prime(v); };
+['pointerdown', 'touchend', 'keydown', 'click'].forEach((t) => addEventListener(t, nudge, { passive: true }));
 // Films load two at a time, the one on screen first: a browser asked for ten films at once shows none of them for a long while.
 const queue = []; let loading = 0;
 function pump() { while (loading < 2 && queue.length) { const v = queue.shift(); if (v.getAttribute('src')) continue; loading++; let over = false; const done = () => { if (over) return; over = true; loading--; pump(); };
   v.preload = 'auto'; v.setAttribute('webkit-playsinline', ''); v.disableRemotePlayback = true;
+  // Safari may send 'loadedmetadata' and then nothing more until the film is used: do not hold the queue for it.
+  v.addEventListener('loadedmetadata', () => { prime(v); if (v._want) v.play().catch(() => {}); setTimeout(done, 2500); }, { once: true });
   v.addEventListener('loadeddata', () => { prime(v); if (v._want) v.play().catch(() => {}); done(); }, { once: true }); v.addEventListener('error', done, { once: true }); setTimeout(done, 9000);
   v.src = (small && v.dataset.srcSmall) || v.dataset.src; v.load(); } }
 const wake = (v, first) => { if (!v || !v.dataset.src || v.getAttribute('src')) return; const i = queue.indexOf(v); if (i >= 0) { if (!first) return; queue.splice(i, 1); } if (first) queue.unshift(v); else queue.push(v); pump(); };
@@ -62,11 +68,11 @@ if (still) $$('video.loop').forEach((v) => { v.controls = true; });
 
 // ------------------------------------------------------------------ the 3D scene
 let space = null;
-try { const { createSpace } = await import('./space.js'); space = createSpace($('#space'), { small, still }); } catch (err) { console.warn('3D scene not available:', err); $('#space').style.display = 'none'; }
+try { const { createSpace } = await import('./space.js?v=b6'); space = createSpace($('#space'), { small, still }); } catch (err) { console.warn('3D scene not available:', err); $('#space').style.display = 'none'; }
 
 // ------------------------------------------------------------------ REGO: always there, with something to say about wherever you are
 let rego = null;
-try { const { createRegoGuide } = await import('./rego.js'); const to = (id) => () => jump($(id).offsetTop);
+try { const { createRegoGuide } = await import('./rego.js?v=b6'); const to = (id) => () => jump($(id).offsetTop);
   rego = createRegoGuide($('#rego'), { still, small, menu: [['Earth', to('#earth')], ['Moon', to('#moon')], ['Mars', to('#mars')], ['The game', to('#game')], ['Science', to('#science')], ['How it was built', to('#built')], ['Contact', to('#contact')], ['Play MOONKEEPER', () => window.open(GAME, '_blank', 'noopener')]] }); } catch (err) { console.warn('REGO not available:', err); $('#rego').remove(); }
 const cues = REGO_CUES.map(([sel, text, mood, a, b], i) => ({ el: $(sel), text, mood, a, b, place: REGO_SPOTS[i] || 'L' })).filter((c) => c.el);
 function regoCue(vh) { if (!rego) return; if (hot) return rego.say(WORLDS[hot].say, 'think'); let pickd = null; const mid = vh * 0.55;
@@ -93,8 +99,8 @@ function onScroll() {
 }
 // a film is moved toward the wanted moment a little at a time, so fast scrolling stays smooth
 function scrub() { for (const c of cines) { const v = c.vids[c.cur]; if (!v || c.want == null || still) continue;
-  for (const j of [c.cur - 1, c.cur + 1]) { const o = c.vids[j]; if (!o || o.readyState < 2 || !o.duration || o.seeking) continue; const park = j < c.cur ? o.duration - 0.05 : 0; if (Math.abs(o.currentTime - park) > 0.04) o.currentTime = park; }
-  if (v.readyState < 2 || !v.duration) { wake(v, true); continue; } const t = c.want * (v.duration - 0.05), d = t - v.currentTime; if (Math.abs(d) > 0.02 && !v.seeking) v.currentTime = Math.abs(d) < 0.06 ? t : v.currentTime + d * 0.5; } }
+  for (const j of [c.cur - 1, c.cur + 1]) { const o = c.vids[j]; if (!o || o.readyState < 1 || !o.duration || o.seeking) continue; const park = j < c.cur ? o.duration - 0.05 : 0; if (Math.abs(o.currentTime - park) > 0.04) o.currentTime = park; }
+  if (v.readyState < 1 || !v.duration) { wake(v, true); continue; } const t = c.want * (v.duration - 0.05), d = t - v.currentTime; if (Math.abs(d) > 0.02 && !v.seeking) v.currentTime = Math.abs(d) < 0.06 ? t : v.currentTime + d * 0.5; } }
 addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onScroll);
 { const y = new URLSearchParams(location.search).get('y'); if (y) jump(+y); }
 // the motion switch: remember the choice, reload in the other version, and come back to the same part of the page
