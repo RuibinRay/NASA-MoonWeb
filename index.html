@@ -15,6 +15,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/calm.css" media="not all" id="calm-css">
+<script>/* full motion unless the visitor chose "Reduce motion" (remembered) */try{if(localStorage.getItem("moonweb-motion")==="reduced"||/[?&]motion=reduced/.test(location.search)){document.documentElement.classList.add("calm");document.getElementById("calm-css").media="all";}}catch(e){}</script>
 </head>
 <body>
 <a class="skip" href="#game">Skip the journey: go to the game</a>
@@ -34,7 +36,8 @@
   </nav>
   <div class="bar-right">
     <button id="sound" type="button" aria-pressed="false" title="Sound is off. Turn on the engine hum and music.">Sound: off</button>
-    <a class="btn small" href="https://ruibinray.github.io/NASA-MoonKeeper/" target="_blank" rel="noopener">Play the game</a>
+    <button id="motion" type="button">Reduce<span class="long"> motion</span></button>
+    <a class="btn small" href="https://ruibinray.github.io/NASA-MoonKeeper/" target="_blank" rel="noopener">Play<span class="long"> the game</span></a>
   </div>
 </header>
 

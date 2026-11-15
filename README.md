@@ -54,9 +54,9 @@ All links inside the site are relative, so it works at any address.
 | `tools/` | how the films and the Mars globe were made, and a small server |
 | `docs/HIGGSFIELD_SHOTS.md` | every cinematic shot: its prompt, where it is used, how to make it again |
 
-The page still works if something fails to load: without the 3D scene, a film or the animation library, every section is readable and every button works. People who ask their device for less motion get the page without pinned scrolling, and REGO stands still and shows each line at once.
+The page still works if something fails to load: without the 3D scene, a film or the animation library, every section is readable and every button works. The page starts with full motion on every device, whatever the device's own motion setting. **Reduce motion**, at the top right, switches to a calm version (no pinned scrolling, REGO stands still and shows each line at once, nothing moves by itself); the choice is remembered, and the same button brings full motion back.
 
-Films load two at a time, the one on screen first. A thin line at the top shows how far through the journey you are. Panels rise into place as they arrive, buttons and cards answer the pointer, and none of that runs for people who ask for less motion.
+Films load two at a time, the one on screen first. A thin line at the top shows how far through the journey you are. Panels rise into place as they arrive, buttons and cards answer the pointer, and none of that runs in the calm version.
 
 ### Phones, Mac and Windows
 

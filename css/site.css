@@ -169,16 +169,14 @@ footer{border-top:1px solid var(--line);margin-top:8vh;font-size:13.5px;color:va
 @media (max-width:520px){.grid4{grid-template-columns:1fr}#sound{display:none}.btn{padding:13px 18px}.brand{font-size:13px;letter-spacing:.08em}#bar nav a{padding:6px 7px;font-size:12.5px}.bar-right .btn.small{padding:8px 11px;font-size:11px}}
 
 /* for people who ask for less motion: no pinned scrolling, no fades; everything is simply there */
-@media (prefers-reduced-motion: reduce){
-  html{scroll-behavior:auto}.cine,.cine.short{height:auto}.stage{position:relative;height:100vh}.beat{opacity:1;transform:none;transition:none}.hint{animation:none}.space{height:120vh}
-}
+
 .no-gsap .beat{opacity:1;transform:none}
 
 /* ---------- film stages of different lengths ---------- */
 .cine.long{height:480vh}.cine.mid{height:320vh}
 .stage{height:100svh}
 @media (max-width:900px){.cine.long{height:400vh}.cine.mid{height:260vh}.title{bottom:calc(132px + 4vh)}.title.left{bottom:calc(132px + 4vh)}.hint{display:none}}
-@media (prefers-reduced-motion: reduce){.cine.long,.cine.mid{height:auto}}
+
 
 /* ---------- REGO, the guide in the corner ---------- */
 .rego{position:fixed;z-index:30;left:max(14px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom));display:grid;grid-template-columns:auto 1fr;grid-template-areas:'body bubble' 'tools tools';align-items:end;gap:0 6px;pointer-events:none;max-width:min(430px,calc(100vw - 28px))}
@@ -305,15 +303,10 @@ a:not(.btn):not(.wl):hover{color:var(--white)}
 @keyframes pop{from{opacity:0;transform:translateY(10px) scale(.94)}}
 .rego-menu button:hover{transform:translateY(-1px)}
 
-@media (prefers-reduced-motion: reduce){
-  .beat{filter:none;letter-spacing:inherit}.kicker.beat{letter-spacing:.24em}
-  .rego-body,.rego-tools,.rego-body canvas,#rail a.on i,.rego-menu:not([hidden]),.tabpanel>*,.holo>*,#channels:not([hidden]) li{animation:none}
-  .stage video.scrub{transform:none}.btn::after{display:none}#progress{display:none}
-  .card:hover,.reel figure:hover,.btn:hover{transform:none}
-}
+
 .cine.xl{height:580vh}
 @media (max-width:900px){.cine.xl{height:480vh}}
-@media (prefers-reduced-motion: reduce){.cine.xl{height:auto}}
+
 
 /* REGO moves about: the guide rolls along a strip at the bottom of the screen */
 .rego{display:block;right:max(14px,env(safe-area-inset-right));max-width:none;height:0}
@@ -326,3 +319,9 @@ a:not(.btn):not(.wl):hover{color:var(--white)}
 @media (max-width:900px){.rego-bubble,.rego-menu{bottom:44px;margin:0}}
 .rego-tools{width:0;padding:0;margin-left:4px;gap:6px;flex-wrap:nowrap}.rego-tools button{flex:none}
 .rego-car.right .rego-tools{align-self:flex-end;justify-content:flex-end;margin-left:0;margin-right:4px}
+
+/* the motion switch, top right */
+#motion{font:500 12.5px var(--body);color:var(--silver);background:none;border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s,border-color .2s}
+#motion:hover{border-color:var(--cyan);color:var(--white)}
+.calm #motion{color:var(--black);background:var(--cyan);border-color:var(--cyan)}
+@media (max-width:520px){.long{display:none}#motion{padding:6px 9px;font-size:11.5px}#bar{padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right));gap:5px}#bar nav{gap:0}#bar nav a{padding:6px 5px}.bar-right{gap:5px}}

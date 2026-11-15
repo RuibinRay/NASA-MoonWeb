@@ -6,7 +6,8 @@ import { WORLDS, TIMELINE, ROOMS, JOBS, MOON_REEL, MARS_REEL, MARS_CARDS, GAME_T
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
-const still = matchMedia('(prefers-reduced-motion: reduce)').matches, small = matchMedia('(max-width: 900px)').matches || navigator.maxTouchPoints > 1 && innerWidth < 1100;
+// Full motion on every device, whatever the device's own setting; the visitor's choice (top right) decides.
+const still = document.documentElement.classList.contains('calm'), small = matchMedia('(max-width: 900px)').matches || navigator.maxTouchPoints > 1 && innerWidth < 1100;
 if (!window.gsap) document.documentElement.classList.add('no-gsap');
 // go to a height at once (older Safari has no 'instant', and the page's smooth scrolling would otherwise glide there)
 const jump = (y) => { const h = document.documentElement, was = h.style.scrollBehavior; h.style.scrollBehavior = 'auto'; scrollTo(0, y); h.style.scrollBehavior = was; };
@@ -95,7 +96,13 @@ function scrub() { for (const c of cines) { const v = c.vids[c.cur]; if (!v || c
   for (const j of [c.cur - 1, c.cur + 1]) { const o = c.vids[j]; if (!o || o.readyState < 2 || !o.duration || o.seeking) continue; const park = j < c.cur ? o.duration - 0.05 : 0; if (Math.abs(o.currentTime - park) > 0.04) o.currentTime = park; }
   if (v.readyState < 2 || !v.duration) { wake(v, true); continue; } const t = c.want * (v.duration - 0.05), d = t - v.currentTime; if (Math.abs(d) > 0.02 && !v.seeking) v.currentTime = Math.abs(d) < 0.06 ? t : v.currentTime + d * 0.5; } }
 addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onScroll);
-{ const y = new URLSearchParams(location.search).get('y'); if (y) jump(+y); }   // ?y=1234 opens the page at that height (for links and for checking)
+{ const y = new URLSearchParams(location.search).get('y'); if (y) jump(+y); }
+// the motion switch: remember the choice, reload in the other version, and come back to the same part of the page
+{ const b = $('#motion'); if (b) { b.firstChild.textContent = still ? 'Full' : 'Reduce'; b.title = still ? 'Motion is reduced. Press for full motion.' : 'Press for a calm version: no pinned films, no moving parts.';
+    b.onclick = () => { let kept = false; try { localStorage.setItem('moonweb-motion', still ? 'full' : 'reduced'); sessionStorage.setItem('moonweb-at', active ? active.id : ''); kept = true; } catch (e) { /* storage blocked: carry the choice in the address instead */ }
+      if (kept && !/[?&]motion=/.test(location.search)) location.reload(); else location.href = location.pathname + (still ? '' : '?motion=reduced'); }; }
+  let at = null; try { at = sessionStorage.getItem('moonweb-at'); sessionStorage.removeItem('moonweb-at'); } catch (e) { /* nothing to restore */ }
+  const back = at && document.getElementById(at); if (back && back.offsetTop > 0) jump(back.offsetTop + 2); }   // ?y=1234 opens the page at that height (for links and for checking)
 onScroll();
 
 // ------------------------------------------------------------------ the three worlds: hover, click, drag

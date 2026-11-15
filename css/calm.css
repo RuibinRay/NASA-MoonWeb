@@ -1,0 +1,9 @@
+/* MOONKEEPER: Beyond Earth — the calm version. This sheet is switched on only when the visitor presses "Reduce motion"
+   (top right): no pinned films, no moving parts, everything readable at once. */
+html{scroll-behavior:auto}.cine,.cine.short{height:auto}.stage{position:relative;height:100vh}.beat{opacity:1;transform:none;transition:none}.hint{animation:none}.space{height:120vh}
+.cine.long,.cine.mid{height:auto}
+.beat{filter:none;letter-spacing:inherit}.kicker.beat{letter-spacing:.24em}
+  .rego-body,.rego-tools,.rego-body canvas,#rail a.on i,.rego-menu:not([hidden]),.tabpanel>*,.holo>*,#channels:not([hidden]) li{animation:none}
+  .stage video.scrub{transform:none}.btn::after{display:none}#progress{display:none}
+  .card:hover,.reel figure:hover,.btn:hover{transform:none}
+.cine.xl{height:auto}
