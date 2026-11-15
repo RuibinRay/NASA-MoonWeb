@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MOONKEEPER: Beyond Earth</title>
+<meta name="description" content="One spaceship, three worlds, one mission beyond Earth. A cinematic journey through MOONKEEPER, a free browser game about keeping a base alive on the Moon and on Mars, built on real NASA data.">
+<meta property="og:title" content="MOONKEEPER: Beyond Earth">
+<meta property="og:description" content="A cinematic journey through MOONKEEPER, a free browser game about surviving on the Moon and on Mars.">
+<meta property="og:image" content="assets/img/poster.jpg">
+<meta name="theme-color" content="#030712">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23030712'/%3E%3Ccircle cx='26' cy='34' r='15' fill='%23D6DCE5'/%3E%3Ccircle cx='46' cy='20' r='7' fill='%23C96B44'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<a class="skip" href="#game">Skip the journey: go to the game</a>
+<canvas id="space" aria-hidden="true"></canvas>
+<div id="veil" aria-hidden="true"></div>
+
+<header id="bar">
+  <a class="brand" href="#opening" aria-label="MOONKEEPER: Beyond Earth, back to the start">MOONKEEPER <span>Beyond Earth</span></a>
+  <nav aria-label="Destinations">
+    <a href="#earth" data-world="earth">Earth</a>
+    <a href="#moon" data-world="moon">Moon</a>
+    <a href="#mars" data-world="mars">Mars</a>
+    <a href="#game">The game</a>
+    <a href="#science">Science</a>
+    <a href="#built">How it was built</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <div class="bar-right">
+    <button id="sound" type="button" aria-pressed="false" title="Sound is off. Turn on the engine hum and music.">Sound: off</button>
+    <a class="btn small" href="https://ruibinray.github.io/NASA-MoonKeeper/" target="_blank" rel="noopener">Play the game</a>
+  </div>
+</header>
+
+<ol id="rail" aria-label="Where you are in the journey"></ol>
+
+<main>
+<!-- 1. opening -->
+<section id="opening" class="cine" data-name="Launch" data-cam="open">
+  <div class="stage">
+    <video class="scrub on" data-src="assets/video/ship_far.mp4" poster="assets/video/ship_far.jpg" muted playsinline preload="none" aria-hidden="true"></video>
+    <video class="scrub" data-src="assets/video/ship_ref.mp4" poster="assets/video/ship_ref.jpg" muted playsinline preload="none" aria-hidden="true"></video>
+    <video class="scrub" data-src="assets/video/ship_journey.mp4" poster="assets/video/ship_journey.jpg" muted playsinline preload="none" aria-hidden="true"></video>
+    <i class="si">SI-generated</i>
+    <div class="shade"></div>
+    <div class="title">
+      <p class="kicker beat" data-at="0">One spaceship. Three worlds. One mission beyond Earth.</p>
+      <h1 class="beat" data-at="0">MOONKEEPER<span>BEYOND EARTH</span></h1>
+      <p class="lede beat" data-at="0.1">Survival is not just about staying alive. It's about building a future beyond our world.</p>
+      <p class="cta beat" data-at="0.1"><a class="btn" href="#worlds">Begin journey</a> <a class="btn ghost" href="https://ruibinray.github.io/NASA-MoonKeeper/" target="_blank" rel="noopener">Play the game</a></p>
+    </div>
+    <p class="hint">Scroll to fly</p>
+  </div>
+</section>
+
+<!-- 2. the three worlds -->
+<section id="worlds" class="space" data-name="Three worlds" data-cam="worlds">
+  <div class="worlds-head">
+    <p class="kicker">Select your destination</p>
+    <h2>Three worlds ahead</h2>
+    <p>Hover a world to read about it, click to fly there, or drag to look around. Sizes are to scale; distances are not. The Moon is Earth's natural satellite, not a planet.</p>
+  </div>
+  <div id="world-labels">
+    <button class="wl" data-world="earth" type="button"><b>Earth</b><span>About the creator</span><em>Discover</em></button>
+    <button class="wl" data-world="moon" type="button"><b>Moon</b><span>Explore MOONKEEPER</span><em>Discover</em></button>
+    <button class="wl" data-world="mars" type="button"><b>Mars</b><span>Explore the new frontier</span><em>Discover</em></button>
+  </div>
+  <p id="world-info" role="status" aria-live="polite"></p>
+</section>
+
+<!-- 3. Earth -->
+<section id="earth" class="world" data-name="Earth" data-cam="earth">
+  <div class="arrival">
+    <video class="loop" data-src="assets/video/earth_arrival.mp4" poster="assets/video/earth_arrival.jpg" muted loop playsinline preload="none" aria-hidden="true"></video>
+    <i class="si">SI-generated</i>
+    <div class="arrival-text"><p class="kicker">Earth · low orbit</p><h2>Every journey begins somewhere.</h2></div>
+  </div>
+  <div class="wrap two">
+    <div class="console">
+      <p class="kicker">The creator</p>
+      <h3>Ruibin (Ray) Jin Yao</h3>
+      <p>Born in Costa Rica with Chinese roots, and now studying in Boston. Ray is completing a Bachelor of Business Administration at Hult International Business School, double majoring in Finance and Business Analytics, and speaks Mandarin, Spanish and English.</p>
+      <p>His portfolio lists his interests as finance, business analytics, energy and technology, international business, and entrepreneurship. He has worked in international business development for a company that makes long-duration energy storage, which is the same problem a Moon base faces every two-week night.</p>
+      <p>MOONKEEPER is his entry for the NASA Space Apps Challenge 2026, made as team <b>Nasa Neo</b>: a game that teaches how people could live beyond Earth by letting players solve the problems themselves.</p>
+      <p class="row"><a class="btn small" href="https://ruibinray.github.io/" target="_blank" rel="noopener">Visit Ray's portfolio</a> <a class="btn small ghost" href="#contact">Contact</a></p>
+      <p class="fine">Facts on this panel come from Ray's own portfolio. Nothing here has been added to it.</p>
+    </div>
+    <div class="console">
+      <p class="kicker">How the project came together</p>
+      <ol id="timeline" class="timeline"></ol>
+      <div id="timeline-detail" class="holo" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. Moon -->
+<section id="moon" class="world" data-name="Moon" data-cam="moon">
+  <div class="cine short" id="moon-arrival">
+    <div class="stage">
+      <video class="scrub on" data-src="assets/video/moon_flyover.mp4" poster="assets/video/moon_flyover.jpg" muted playsinline preload="none" aria-hidden="true"></video>
+      <i class="si">SI-generated</i>
+      <div class="shade"></div>
+      <div class="title left">
+        <p class="kicker beat" data-at="0.05">The Moon · Sea of Tranquility</p>
+        <h2 class="beat" data-at="0.15">The Moon is beautiful.<br>Surviving it is not.</h2>
+        <p class="lede beat" data-at="0.4">A meteor shower has struck every station on the Moon. You are the only one left at Tranquility Deep, a base inside a real lava-tube pit. Keep it running until the rescue ship lands.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <article class="scene-row">
+      <figure class="shot"><video class="loop" data-src="assets/video/moon_impact.mp4" poster="assets/video/moon_impact.jpg" muted loop playsinline preload="none"></video><i class="si">SI-generated</i><figcaption>Cinematic made from one of the game's event pictures.</figcaption></figure>
+      <div><p class="kicker">Scene A · The impact</p><h3>It starts with a strike</h3><p>With no air to burn them up, even small meteoroids reach the Moon's ground at 20 kilometres a second or more. In the game every strike and every moonquake is taken from records made by the seismometers the Apollo crews left behind: 213 impacts and 28 shallow moonquakes.</p><p class="tags"><span class="tag real">Real data: Apollo seismic catalog</span><span class="tag story">Story: a shower that hits every station</span></p></div>
+    </article>
+    <article class="scene-row flip">
+      <figure class="shot"><video class="loop" data-src="assets/clips/moon_airlock.mp4" poster="assets/clips/moon_airlock.jpg" muted loop playsinline preload="none"></video><figcaption>Recorded from the game: the airlock opening to the cave.</figcaption></figure>
+      <div><p class="kicker">Scene B · Survival</p><h3>Power on, air in</h3><p>Every room is a sealed bubble of air behind a bulkhead door. When one is holed you patch it, or lock its door to save the rest of the station and rebuild that room later. Power, oxygen, water and food all run down unless you act, and no choice is free: every machine eats power, every helper eats something, every fix costs time.</p><p class="tags"><span class="tag real">Real: sealed sections, as on real space stations</span><span class="tag play">Simplified: repair times</span></p></div>
+    </article>
+    <article class="scene-row">
+      <div class="station" id="station" aria-label="Cross-section of Tranquility Deep. Choose a room to read what it does."></div>
+      <div><p class="kicker">Scene C · Engineering</p><h3>One station, eleven rooms</h3><p>Choose a room in the cross-section. One Power Board runs the whole base: turning the Oxygen Maker up leaves less for the farm lights or the heaters.</p><div id="station-info" class="holo" role="status" aria-live="polite"></div></div>
+    </article>
+    <article class="scene-row flip">
+      <figure class="shot"><video class="loop" data-src="assets/clips/moon_mgweld.mp4" poster="assets/clips/moon_mgweld.jpg" muted loop playsinline preload="none"></video><figcaption>Recorded from the game: welding a wall panel all the way round.</figcaption></figure>
+      <div><p class="kicker">Scene D · Real-world skills</p><h3>Every job is done by hand</h3><p>Before each big job there is a short hands-on game based on a real procedure. There are sixteen:</p><ul class="chips" id="jobs"></ul><p class="tags"><span class="tag play">Simplified: each takes seconds, not hours</span></p></div>
+    </article>
+    <article class="scene-row">
+      <div class="night" id="night">
+        <canvas width="640" height="300" aria-label="The Sun's power and the battery over one lunar day and night"></canvas>
+        <label>Time in the lunar day <input type="range" min="0" max="29.5" step="0.1" value="6" aria-describedby="night-read"></label>
+        <p id="night-read" class="read" role="status" aria-live="polite"></p>
+      </div>
+      <div><p class="kicker">Scene E · The lunar night</p><h3>Two weeks without the Sun</h3><p>A day on the Moon lasts about 29.5 Earth days, so night lasts about two weeks. Solar panels make nothing, the ground falls to around −130 °C, and the base must live on its battery and a small reactor. Drag the slider to see why the game makes you fill the battery and the oxygen tank before sunset.</p><p class="tags"><span class="tag real">Real: the length of the lunar day</span><span class="tag play">Simplified: this diagram's battery numbers</span></p></div>
+    </article>
+  </div>
+
+  <div class="wrap">
+    <h3 class="center">Recorded from the real game</h3>
+    <div class="reel" id="moon-reel"></div>
+    <div class="trailer">
+      <video controls preload="none" poster="assets/img/poster.jpg" src="https://ruibinray.github.io/NASA-MoonKeeper/demo/moonkeeper-demo.mp4"></video>
+      <div><p class="kicker">30-second trailer</p><h3>Watch the game in half a minute</h3><p>Ten of its fourteen shots are recorded straight from the game. The opening shot, the hopper shot and the Mars title card were made with SI tools and are marked.</p><p class="row"><a class="btn" href="https://ruibinray.github.io/NASA-MoonKeeper/" target="_blank" rel="noopener">Play MOONKEEPER</a></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. Mars -->
+<section id="mars" class="world" data-name="Mars" data-cam="mars">
+  <div class="cine short" id="mars-arrival">
+    <div class="stage">
+      <video class="scrub on" data-src="assets/video/mars_travel.mp4" poster="assets/video/mars_travel.jpg" muted playsinline preload="none" aria-hidden="true"></video>
+      <video class="scrub" data-src="assets/video/mars_landing.mp4" poster="assets/video/mars_landing.jpg" muted playsinline preload="none" aria-hidden="true"></video>
+      <i class="si">SI-generated</i>
+      <div class="shade"></div>
+      <div class="title left">
+        <p class="kicker beat" data-at="0.05">Mars · Arcadia Planitia</p>
+        <h2 class="beat" data-at="0.15">The next frontier is red.</h2>
+        <p class="lede beat" data-at="0.45">The cheap way to Mars opens about once every 26 months, and the trip takes around nine months. The game's second world is an outpost on a cold plain with ice under the soil.</p>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <p class="status"><b>Playable now, and still growing.</b> Mars is in the game as an outpost you can explore and a first survival mission. Flights between the Moon and Mars are planned, not built.</p>
+    <div class="grid3" id="mars-cards"></div>
+    <h3 class="center">Recorded from the Mars game</h3>
+    <div class="reel" id="mars-reel"></div>
+    <p class="row center"><a class="btn" href="https://ruibinray.github.io/NASA-MoonKeeper/?go=mars" target="_blank" rel="noopener">Explore Mars in the game</a> <a class="btn ghost" href="https://ruibinray.github.io/NASA-MoonKeeper/science.html" target="_blank" rel="noopener">Open the Mars Science Center</a></p>
+  </div>
+</section>
+
+<!-- 6. the game -->
+<section id="game" class="panel" data-name="The game" data-cam="deep">
+  <div class="wrap">
+    <p class="kicker">What is MOONKEEPER?</p>
+    <h2>More than a game.</h2>
+    <p class="lede">A free 3D game for ages 7 to 18 that runs in a browser, with no download and no login. It mixes survival, engineering decisions, resource management and exploration, and explains each idea at the moment the player needs it.</p>
+    <div class="tabs" id="game-tabs" role="tablist" aria-label="Parts of the game"></div>
+    <div class="tabpanel" id="game-panel" role="tabpanel"></div>
+    <div class="two">
+      <div class="console"><p class="kicker">Who it is for</p><h3>Four missions</h3><ul class="plain" id="modes"></ul></div>
+      <div class="console"><p class="kicker">How to play</p><h3>Keys</h3><dl class="keys" id="keys"></dl><p class="fine">Phones and tablets get on-screen controls. The game speaks 16 languages.</p></div>
+    </div>
+    <p class="row center"><a class="btn big" href="https://ruibinray.github.io/NASA-MoonKeeper/" target="_blank" rel="noopener">Launch game</a></p>
+  </div>
+</section>
+
+<!-- 7. how it was built -->
+<section id="built" class="panel" data-name="How it was built" data-cam="deep">
+  <div class="wrap">
+    <p class="kicker">How I built MOONKEEPER</p>
+    <h2>From an idea to a living world.</h2>
+    <ol class="flow" id="flow"></ol>
+    <div id="flow-detail" class="holo" role="status" aria-live="polite"></div>
+    <div class="two">
+      <div class="console"><p class="kicker">Who did what</p><h3>Made with SI tools, directed by a person</h3><ul class="plain" id="si-list"></ul><p class="fine">SI means Super Intelligence, the Space Apps name for AI tools. The same facts are in the game's README and in <a href="https://ruibinray.github.io/NASA-MoonKeeper/si-use.json" target="_blank" rel="noopener">si-use.json</a>.</p></div>
+      <div class="console"><p class="kicker">Under the hood</p><h3>Technical architecture</h3><ul class="arch" id="arch"></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. science -->
+<section id="science" class="panel" data-name="Science" data-cam="deep">
+  <div class="wrap">
+    <p class="kicker">The NASA data and the research</p>
+    <h2>Inspired by real science.</h2>
+    <p class="lede">The game is not made, certified or endorsed by NASA. It uses NASA's public data and explains where each number comes from. Every item below says which kind of fact it is.</p>
+    <p class="tags key"><span class="tag real">Verified NASA data</span><span class="tag play">Gameplay simplification</span><span class="tag story">Fictional story</span></p>
+    <div class="compare" id="compare"></div>
+    <div class="two">
+      <div class="console exhibit"><p class="kicker">Gravity lab</p><h3>Drop the same ball on three worlds</h3><canvas id="grav" width="560" height="260" aria-label="A ball falling on Earth, the Moon and Mars"></canvas><p class="row"><button class="btn small" id="grav-drop" type="button">Drop</button><span class="read" id="grav-read"></span></p></div>
+      <div class="console exhibit"><p class="kicker">Life-support lab</p><h3>Oxygen from water</h3><label>Crew <input id="o2-crew" type="range" min="1" max="8" value="4"></label><p class="read" id="o2-read" role="status" aria-live="polite"></p><p>Electricity splits water into hydrogen and oxygen: 2 H₂O → 2 H₂ + O₂. Nine kilograms of water hold eight kilograms of oxygen. The International Space Station makes part of its oxygen this way.</p><p class="tags"><span class="tag real">Real: the chemistry, and 0.84 kg a day per person</span><span class="tag play">Simplified: the game's machine sizes</span></p></div>
+    </div>
+    <div class="two">
+      <div class="console"><p class="kicker">Real or made up?</p><h3>Test yourself</h3><div id="rof"></div></div>
+      <div class="console"><p class="kicker">Sources</p><h3>Where the numbers come from</h3><ul class="sources" id="sources"></ul><p class="fine">The full lists, with the game rule each source feeds, are in the repository: <a href="https://github.com/RuibinRay/NASA-MoonKeeper/blob/main/docs/SCIENCE_AND_SOURCES.md" target="_blank" rel="noopener">Moon</a> and <a href="https://github.com/RuibinRay/NASA-MoonKeeper/blob/main/docs/MARS_SCIENCE.md" target="_blank" rel="noopener">Mars</a>.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. the goal -->
+<section id="goal" class="world" data-name="The goal" data-cam="final">
+  <div class="wrap">
+    <p class="kicker">What is the goal?</p>
+    <h2>Learn. Explore. Survive. Build.</h2>
+    <div class="grid4" id="themes"></div>
+  </div>
+  <div class="arrival tall">
+    <video class="loop" data-src="assets/video/final_wide.mp4" poster="assets/video/final_wide.jpg" muted loop playsinline preload="none" aria-hidden="true"></video>
+    <i class="si">SI-generated</i>
+    <div class="arrival-text center"><h2 class="huge">The future is not just somewhere we go.<span>It is something we learn to build.</span></h2><p><a class="btn big" href="https://ruibinray.github.io/NASA-MoonKeeper/" target="_blank" rel="noopener">Start your mission</a></p></div>
+  </div>
+</section>
+
+<!-- 10. contact -->
+<section id="contact" class="panel" data-name="Contact" data-cam="final">
+  <div class="wrap narrow">
+    <div class="terminal">
+      <p class="kicker">Communication terminal</p>
+      <h2>Open a channel.</h2>
+      <p>Interested in the game, the code or the person who made it?</p>
+      <p><button class="btn" id="hail" type="button" aria-expanded="false" aria-controls="channels">Establish contact</button></p>
+      <ul id="channels" class="channels" hidden>
+        <li><span>Email</span><a href="mailto:ruibinjinyao@gmail.com">ruibinjinyao@gmail.com</a></li>
+        <li><span>Portfolio</span><a href="https://ruibinray.github.io/" target="_blank" rel="noopener">ruibinray.github.io</a></li>
+        <li><span>GitHub</span><a href="https://github.com/RuibinRay" target="_blank" rel="noopener">github.com/RuibinRay</a></li>
+        <li><span>LinkedIn</span><a href="https://www.linkedin.com/in/edwin-ruibin-jin-yao-a6b050239" target="_blank" rel="noopener">Edwin Ruibin Jin Yao</a></li>
+        <li><span>The game</span><a href="https://ruibinray.github.io/NASA-MoonKeeper/" target="_blank" rel="noopener">Play MOONKEEPER</a></li>
+        <li><span>Source code</span><a href="https://github.com/RuibinRay/NASA-MoonKeeper" target="_blank" rel="noopener">github.com/RuibinRay/NASA-MoonKeeper</a></li>
+      </ul>
+    </div>
+  </div>
+  <footer>
+    <div class="wrap">
+      <p><b>Credits.</b> Earth and Moon textures: NASA (Blue Marble, CGI Moon Kit). Mars globe: drawn from NASA's MOLA elevation data (heights are real, colours are an illustration). Gameplay clips: recorded from MOONKEEPER. Cinematic clips and stills marked "SI-generated": made with Higgsfield (Seedance 2.5 and its image model) from written prompts and the game's own pictures. This site's code and text: written with Claude under human direction. 3D: Three.js. Scrolling: GSAP. Fonts: Chakra Petch and Inter.</p>
+      <p>MOONKEEPER is a student project for the NASA Space Apps Challenge 2026. It is not made, certified or endorsed by NASA, and it uses no NASA logo.</p>
+      <p><a href="https://ruibinray.github.io/NASA-MoonKeeper/" target="_blank" rel="noopener">Play the game</a> · <a href="#science">Scientific sources</a> · <a href="https://github.com/RuibinRay/NASA-MoonWeb" target="_blank" rel="noopener">This site's source</a> · <a href="https://ruibinray.github.io/" target="_blank" rel="noopener">Ruibin Jin Yao</a></p>
+    </div>
+  </footer>
+</section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
