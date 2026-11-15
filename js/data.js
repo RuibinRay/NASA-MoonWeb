@@ -67,7 +67,7 @@ export const FLOW = [
 export const SI_LIST = [
   ['A person', 'chose what to build, asked for every change, and decided what went in.'],
   ['Claude (Anthropic)', 'wrote the code, tests, tools and documents through Claude Code, and the translations into 15 languages (checked by machine, not yet by native speakers).'],
-  ['Higgsfield', 'made the 111 pictures in the game with its image model, and this site\'s cinematic clips with Seedance 2.5. Every one carries a visible "SI-generated" mark.'],
+  ['Higgsfield', 'made the 111 pictures in the game with its image model, and this site\'s cinematic clips with Seedance 2.0 and 2.5. Every one carries a visible "SI-generated" mark.'],
   ['Not SI', 'the NASA datasets and the NASA Earth and Moon images; the 3D worlds, which are built from code; and REGO\'s voice, which is the speech built into the player\'s own device.'],
 ];
 
@@ -123,10 +123,11 @@ export { GAME };
 // is said while the scroll is between those two fractions of it; without, it is said while that element is in the middle
 // of the screen. Later cues win over earlier ones, so the small things inside a section override the section's own line.
 export const REGO_CUES = [
-  ['#opening', "Hello, Commander. I'm REGO. Scroll, and I'll fly with you.", 'joy', 0, 0.25],
-  ['#opening', 'This is our ship: four engines, two solar wings, and me.', 'happy', 0.25, 0.5],
-  ['#opening', 'Engines up! Hold on to something.', 'alert', 0.5, 0.75],
-  ['#opening', 'Welcome aboard. We have three destinations ahead of us.', 'joy', 0.75, 1.01],
+  ['#opening', "Hello, Commander. I'm REGO. Scroll, and I'll fly with you.", 'joy', 0, 0.2],
+  ['#opening', 'This is our ship: four engines, two solar wings, and me.', 'happy', 0.2, 0.4],
+  ['#opening', 'Engines up! Follow the hull to the front.', 'alert', 0.4, 0.6],
+  ['#opening', "See the window? That's me inside. Come in.", 'happy', 0.6, 0.8],
+  ['#opening', 'Welcome aboard. We have three destinations ahead of us.', 'joy', 0.8, 1.01],
   ['#worlds', "Three worlds. Point at one and I'll tell you about it. Click it and we'll fly there.", 'happy'],
   ['#earth', 'Earth. Home of my creator, and where this whole adventure began.', 'happy'],
   ['#earth .console:first-child', "That's Ray. He built my game for the NASA Space Apps Challenge.", 'joy'],
@@ -159,3 +160,6 @@ export const REGO_CUES = [
   ['#contact', "Want to contact my creator? Press the button and I'll open a channel.", 'happy'],
   ['footer', 'That is who built me. The portfolio is one click away, Commander.', 'joy'],
 ];
+// Where REGO goes to say each cue, in the same order: L left, M middle, R right of the screen's bottom edge.
+// Chosen so the guide keeps off the words and buttons of that part of the page, and so it keeps moving.
+export const REGO_SPOTS = 'LLRMLLRRLRLRLRLRLRRMLRLRLRLRLRLMRRLL';

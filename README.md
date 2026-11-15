@@ -8,9 +8,9 @@ Live site: https://ruibinray.github.io/NASA-MoonWeb/
 
 ## What is on the page
 
-1. **Launch**: a spacecraft appears out of the dark. Scrolling moves four films forwards and backwards; in the last one REGO, the game's robot, welcomes you aboard.
+1. **Launch**: one continuous shot, moved forwards and backwards by scrolling. A spacecraft appears out of the dark; the camera closes on its engines, runs along the hull to the cockpit window, slips through the glass, and REGO, the game's robot, welcomes you aboard. It is five clips made to join without a cut. The Moon, Mars and ending films are made the same way.
 
-   **REGO is with you the whole way.** REGO stands in the corner of the screen, rolls as you scroll, looks toward your pointer, and says something different in every part of the page (35 lines, in `js/data.js`). Click REGO for a menu of places to go. **Quiet** stops the talking; **Hide** tucks REGO away; both choices are remembered. With the page's sound switched on REGO also speaks aloud, using the voice built into your device. REGO appears in four of the films too: in the cockpit, beside a broken solar panel on the Moon, rolling onto Mars, and waving goodbye at the end.
+   **REGO is with you the whole way.** REGO rolls along the bottom of the screen to a different place for each thing it says (left, middle or right, chosen to keep off the words there): a dash when the place is far, slower as it arrives, and a little shuffle when left alone. REGO's treads turn as you scroll, and REGO looks toward your pointer, and says something different in every part of the page (36 lines, in `js/data.js`). Click REGO for a menu of places to go. **Quiet** stops the talking; **Hide** tucks REGO away; both choices are remembered. With the page's sound switched on REGO also speaks aloud, using the voice built into your device. REGO appears in four of the films too: in the cockpit, beside a broken solar panel on the Moon, rolling onto Mars, and waving goodbye at the end.
 2. **Three worlds**: a live 3D view of Earth, the Moon and Mars. Hover to read, click to fly there, drag to look around.
 3. **Earth**: the creator, and how the project came together.
 4. **Moon**: the game's story and five scenes (the impact, survival, the station's eleven rooms, the sixteen job games, the two-week night), with clips recorded from the game and its 30-second trailer.
@@ -18,7 +18,7 @@ Live site: https://ruibinray.github.io/NASA-MoonWeb/
 6. **The game**: what you do, who it is for, and the keys.
 7. **How it was built**: the workflow, who did what, and the architecture.
 8. **Science**: Earth, Moon and Mars side by side, three small experiments, a "real or made up?" quiz, and the sources.
-9. **The goal**, **Contact**, and the **author**: Ruibin Jin Yao ([portfolio](https://ruibinray.github.io/Profile/)).
+9. **The goal**, **Contact**, and the **author**: Edwin Ruibin Jin Yao ([portfolio](https://ruibinray.github.io/Profile/)).
 
 ## Run it on your computer
 
@@ -48,13 +48,15 @@ All links inside the site are relative, so it works at any address.
 | `js/main.js` | scrolling, the films, the three worlds, the experiments, the sound |
 | `js/rego.js` | REGO: the same robot as in the game, built from shapes in code, and the guide in the corner of the screen |
 | `lib/three.module.min.js` | Three.js r160 |
-| `assets/video/` | the cinematic clips and their first frames |
+| `assets/video/` | the cinematic clips (1080p, and `_s` 720p for phones) and their first frames |
 | `assets/clips/` | clips recorded from the game |
 | `assets/tex/` | the pictures wrapped round the three worlds |
 | `tools/` | how the films and the Mars globe were made, and a small server |
 | `docs/HIGGSFIELD_SHOTS.md` | every cinematic shot: its prompt, where it is used, how to make it again |
 
 The page still works if something fails to load: without the 3D scene, a film or the animation library, every section is readable and every button works. People who ask their device for less motion get the page without pinned scrolling, and REGO stands still and shows each line at once.
+
+Films load two at a time, the one on screen first. A thin line at the top shows how far through the journey you are. Panels rise into place as they arrive, buttons and cards answer the pointer, and none of that runs for people who ask for less motion.
 
 ### Phones, Mac and Windows
 
@@ -70,7 +72,7 @@ SI (Super Intelligence) is the NASA Space Apps name for AI tools.
 
 | What | How it was made |
 |---|---|
-| Cinematic stills and clips (`assets/video/`) | **SI:** Higgsfield image model and Seedance 2.5, from the prompts in `docs/HIGGSFIELD_SHOTS.md`. Each is shown with a visible "SI-generated" mark |
+| Cinematic stills and clips (`assets/video/`) | **SI:** Higgsfield image model, Seedance 2.0 (4K) and Seedance 2.5, from the prompts in `docs/HIGGSFIELD_SHOTS.md`. Each is shown with a visible "SI-generated" mark |
 | The site's code and text | **SI:** written with Claude (Anthropic) under human direction |
 | Clips in `assets/clips/` | recorded from the game, frame by frame |
 | Earth and Moon pictures | NASA (Blue Marble, CGI Moon Kit), as used in the game |

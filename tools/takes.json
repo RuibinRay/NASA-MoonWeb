@@ -1,0 +1,132 @@
+{
+ "base": "art/manifest.json",
+ "stillResolution": "4k",
+ "stillStyle": "Grounded space-agency engineering realism with the restrained production design of a prestige science-fiction film. Photorealistic cinematic film still, anamorphic lens, natural film colour grade, deep blacks, ultra detailed, sharp focus. No people, no text, no letters, no numbers, no labels, no user interface, no logos, no flags, no insignia, no watermark.",
+ "videoStyle": "One continuous unbroken shot: a single smooth, steady cinematic camera move from the first frame to the last frame. Physically believable motion. No cuts, no fades, no flashes, no text, no logos. Keep the spacecraft and the robot exactly as they appear in the first and last frames.",
+ "variants": {
+  "k4": {
+   "endpoint": "bytedance/seedance-2.0/image-to-video",
+   "resolution": "4k"
+  },
+  "hd": {
+   "endpoint": "bytedance/seedance-2.5/image-to-video",
+   "resolution": "1080p"
+  }
+ },
+ "stills": [
+  {
+   "id": "o0",
+   "refs": [
+    "ship_ref"
+   ],
+   "prompt": "The same spacecraft as in the reference image, very small and far away in the exact middle of the frame, seen from directly behind, in an almost completely black field of deep space with only a few faint stars. Its four rear engine bells give a faint soft blue glow. Far ahead of it, tiny, a small blue Earth. Very dark, quiet, mysterious, a great deal of empty black space around it."
+  },
+  {
+   "id": "o1",
+   "refs": [
+    "ship_ref"
+   ],
+   "prompt": "The same spacecraft as in the reference image seen from close behind and slightly to the left: its cluster of four engine bells, arranged in a square, large in the lower right of the frame and glowing bright blue-white; the white hull with rust-orange accent stripes stretches away toward the nose; the long dark-blue left solar wing reaches out to the left. Far ahead past the nose, a small blue Earth. Hard sunlight from the upper left, deep black sky with small sharp stars."
+  },
+  {
+   "id": "o2",
+   "refs": [
+    "ship_ref"
+   ],
+   "prompt": "The same spacecraft as in the reference image seen from alongside its left flank, the camera close to the cylindrical mid body and looking forward along the hull toward the nose: white panels with visible seams and rust-orange accent stripes sliding past, the long dark-blue left solar wing in the left foreground, the rounded cockpit with its dark wraparound glass canopy ahead at the nose with a warm light inside. Beyond the nose, the blue Earth, larger now, with a tiny grey Moon beside it. Hard sunlight from the upper left, deep black sky with small sharp stars."
+  },
+  {
+   "id": "o3",
+   "refs": [
+    "ship_ref",
+    "https://ruibinray.github.io/NASA-MoonKeeper/assets/img/c_rego.jpg",
+    "rego_cockpit"
+   ],
+   "prompt": "Close on the cockpit at the nose of the same spacecraft as in the first reference image, seen from just outside its left side. Through the dark wraparound glass canopy, lit by warm cabin light, the small robot from the second reference image (white rounded body with one orange band, dark tank treads, a wide white head with orange ear discs and a dark glass visor showing two big glowing cyan oval eyes, a thin antenna with a small amber light) stands on the deck between two empty pilot seats, seen in profile, looking forward out of the window. The cabin inside matches the third reference image. Beyond the nose of the spacecraft, the blue Earth, a small grey Moon and a tiny rust-red Mars. Soft reflections of stars on the glass. Hard sunlight from the upper left, deep black sky."
+  }
+ ],
+ "clips": [
+  {
+   "id": "open1",
+   "from": "o0",
+   "to": "o1",
+   "prompt": "The camera flies steadily forward through dark space toward the distant spacecraft, closing in from behind until its four engine bells fill the lower right of the frame; the engine glow brightens from faint to bright blue-white as more stars fade in."
+  },
+  {
+   "id": "open2",
+   "from": "o1",
+   "to": "o2",
+   "prompt": "The four engines flare. The camera slides forward past the engine bells and along the left flank of the spacecraft, close to the hull, the long solar wing passing on the left, the cockpit canopy coming into view ahead at the nose while the Earth grows beyond it."
+  },
+  {
+   "id": "open3",
+   "from": "o2",
+   "to": "o3",
+   "prompt": "The camera keeps gliding forward along the hull to the nose of the spacecraft and eases in toward the glass cockpit canopy, where warm light glows and a small robot can be seen inside, in profile, looking out at the worlds ahead."
+  },
+  {
+   "id": "open4",
+   "from": "o3",
+   "to": "rego_cockpit",
+   "prompt": "The camera slips smoothly through the side of the glass canopy into the cockpit and arcs a quarter turn to settle behind the two pilot seats looking forward, as the small robot turns on its treads to face the camera; through the wide canopy window behind it are the Earth, the Moon and Mars, and a pale cyan holographic star map floats above the console."
+  },
+  {
+   "id": "open5",
+   "from": "rego_cockpit",
+   "prompt": "The small robot looks at the camera, its cyan eyes blink once, and it raises one short arm and waves; the holographic star map beside it brightens and slowly turns. The camera holds almost still, with only a very slow push in."
+  },
+  {
+   "id": "moon1",
+   "from": "moon_flyover",
+   "to": "rego_moon",
+   "prompt": "The camera flies low and fast over the cratered lunar surface, leaves the spacecraft behind, and descends in one long smooth glide toward the white station at the rim of the wide dark pit, sinking to ground level and settling beside a cracked, fallen solar panel where a small robot is looking up at it. No sound, no smoke, no fire."
+  },
+  {
+   "id": "moon2",
+   "from": "rego_moon",
+   "prompt": "The small robot rolls a little closer to the broken solar panel on its treads, leaving marks in the dust, points one short arm at the crack, then turns its head to look at the camera. Amber warning lights pulse on the station behind. No sound, no smoke, no fire."
+  },
+  {
+   "id": "mars1",
+   "from": "mars_travel",
+   "to": "mars_landing",
+   "prompt": "The camera pushes forward past the coasting spacecraft toward Mars, which swells until its rust-red surface fills the frame; the camera sinks through thin butterscotch haze and comes out low over a rocky rust-brown plain, where a squat white landing craft is descending on bright engine flames toward a small outpost."
+  },
+  {
+   "id": "mars2",
+   "from": "mars_landing",
+   "to": "rego_mars",
+   "prompt": "The landing craft touches down in a billowing ring of tan dust. The camera glides down and around to the foot of its ramp as the dust drifts away, where a small robot stands on the Martian soil looking out toward the outpost."
+  },
+  {
+   "id": "mars3",
+   "from": "rego_mars",
+   "prompt": "The small robot rolls forward off the ramp onto the Martian soil, its treads raising a little dust, stops, and turns its head slowly from the outpost to the camera while thin dust blows past."
+  },
+  {
+   "id": "final1",
+   "from": "final_wide",
+   "to": "rego_farewell",
+   "prompt": "The camera pulls slowly and steadily straight backward. The frame of a large observation window slides into view around the scene, revealing that the Earth, the Moon and far-off Mars are being watched from inside a dark, quiet cabin, where a small robot stands at the window with its back to the camera, its chest lamp throwing a soft warm glow on the window frame."
+  },
+  {
+   "id": "final2",
+   "from": "rego_farewell",
+   "prompt": "The small robot turns round from the window to face the camera, its cyan eyes curve into a happy shape, and it lifts one short arm and waves goodbye while the Earth turns slowly behind it."
+  }
+ ],
+ "picked": {
+  "open1": "k4",
+  "open2": "k4",
+  "open3": "k4",
+  "open4": "k4",
+  "open5": "k4",
+  "moon1": "k4",
+  "moon2": "k4",
+  "mars1": "k4",
+  "mars2": "k4",
+  "mars3": "k4",
+  "final1": "k4",
+  "final2": "hd"
+ }
+}

@@ -65,40 +65,68 @@ const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls)
 const store = { get: (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) { /* storage blocked: the choice just lasts for this visit */ } } };
 
 // host: an empty element. menu: [[label, run]] for the buttons that open when REGO is clicked.
+// REGO does not stay in one corner. go('L' | 'M' | 'R') sends REGO rolling along the bottom of the screen to another
+// place: a dash when it is far, slower as it gets near; and when left alone REGO shuffles about a little.
 export function createRegoGuide(host, { still = false, small = false, menu = [] } = {}) {
   host.innerHTML = ''; host.classList.add('rego');
-  const bubble = el('div', 'rego-bubble'), text = el('p'), panel = el('div', 'rego-menu'), bodyBtn = el('button', 'rego-body'), cv = el('canvas'), tools = el('div', 'rego-tools'), quiet = el('button', '', 'Quiet'), tuck = el('button', '', 'Hide');
+  const bubble = el('div', 'rego-bubble'), text = el('p'), panel = el('div', 'rego-menu'), car = el('div', 'rego-car'), bodyBtn = el('button', 'rego-body'), cv = el('canvas'), tools = el('div', 'rego-tools'), quiet = el('button', '', 'Quiet'), tuck = el('button', '', 'Hide');
   bubble.setAttribute('role', 'status'); bubble.setAttribute('aria-live', 'polite'); bubble.appendChild(text); panel.hidden = true; bodyBtn.type = quiet.type = tuck.type = 'button'; bodyBtn.setAttribute('aria-label', 'REGO, your guide. Open the menu.'); bodyBtn.setAttribute('aria-expanded', 'false');
-  quiet.setAttribute('aria-pressed', 'false'); quiet.title = 'Stop REGO talking (REGO stays on screen)'; tuck.title = 'Tuck REGO away'; bodyBtn.appendChild(cv); tools.append(quiet, tuck); host.append(bubble, panel, bodyBtn, tools);
+  quiet.setAttribute('aria-pressed', 'false'); quiet.title = 'Stop REGO talking (REGO stays on screen)'; tuck.title = 'Tuck REGO away'; bodyBtn.appendChild(cv); tools.append(quiet, tuck); car.append(bodyBtn, tools); host.append(bubble, panel, car);
   panel.appendChild(el('p', 'rego-menu-h', 'Where to, Commander?')); for (const [label, run] of menu) { const b = el('button', '', label); b.type = 'button'; b.onclick = () => { toggleMenu(false); run(); }; panel.appendChild(b); }
 
-  // the little 3D stage he stands on
+  // the little 3D stage REGO stands on
   let renderer = null, scene = null, camera = null, rego = null;
   try { renderer = new THREE.WebGLRenderer({ canvas: cv, alpha: true, antialias: true }); renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); renderer.outputColorSpace = THREE.SRGBColorSpace;
     scene = new THREE.Scene(); camera = new THREE.PerspectiveCamera(30, 1, 0.1, 20); camera.position.set(0.9, 1.25, 3.9); camera.lookAt(0, 0.72, 0);
     const key = new THREE.DirectionalLight(0xffffff, 2.4); key.position.set(2, 3, 3); const rim = new THREE.DirectionalLight(0x62ddf3, 1.6); rim.position.set(-3, 2, -2); scene.add(key, rim, new THREE.HemisphereLight(0xdfe8ff, 0x20242c, 1.1));
     rego = new Rego(); rego.group.rotation.y = -0.25; scene.add(rego.group); } catch (err) { cv.replaceWith(el('span', 'rego-flat', 'REGO')); }
-  const fit = () => { if (!renderer) return; const w = cv.clientWidth || 120, h = cv.clientHeight || 140; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }; fit(); addEventListener('resize', fit);
 
-  // ---- what he says ----
+  // ---- where REGO is: x runs along the bottom strip, from 0 (left) to W - bw (right) ----
+  let W = 0, bw = 0, x = 0, tx = 0, home = 0, place = 'L', moving = false, shuffling = false, idle = 0, nextShuffle = 6, drive = 0, faceTo = -0.25;
+  const measure = () => { W = host.clientWidth || innerWidth - 28; bw = bodyBtn.offsetWidth || (small ? 78 : 112); };
+  const spot = (p) => (p === 'R' || (p === 'M' && W < 700) ? W - bw : p === 'M' ? (W - bw) / 2 : 0);
+  // put the car at x, and the speech bubble and the menu on the side of it that has room
+  function seat() { const right = x + bw / 2 > W / 2 + 1; car.style.transform = 'translateX(' + x.toFixed(1) + 'px)'; car.classList.toggle('right', right);
+    for (const b of [bubble, panel]) { b.classList.toggle('flip', right); b.style.left = right ? 'auto' : Math.round(x + bw + 6) + 'px'; b.style.right = right ? Math.round(W - x + 6) + 'px' : 'auto'; b.style.maxWidth = Math.max(150, Math.min(318, right ? x - 6 : W - x - bw - 6)) + 'px'; } }
+  const fit = () => { measure(); home = spot(place); x = tx = home; moving = shuffling = false; seat(); if (!renderer) return; const w = cv.clientWidth || 120, h = cv.clientHeight || 140; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }; fit(); addEventListener('resize', fit);
+
+  // ---- what REGO says ----
   let line = '', typing = 0, isQuiet = store.get('rego-quiet') === '1', hidden = store.get('rego-hidden') === '1', speak = false, look = 0, lookUp = 0, speed = 0;
   function show(t) { clearInterval(typing); if (still || t.length < 4) { text.textContent = t; return; } let n = 0; text.textContent = ''; typing = setInterval(() => { n += 2; text.textContent = t.slice(0, n); if (n >= t.length) clearInterval(typing); }, 18); }
   function say(t, mood = 'happy') {
     if (!t || t === line) return; line = t; if (rego) { rego.setMood(mood); rego.talk = Math.min(4, 0.6 + t.length * 0.03); if (mood === 'joy') rego.wave = 1.3; }
-    if (isQuiet || hidden) return; bubble.classList.add('on'); show(t);
+    if (isQuiet || hidden) return; if (!moving) { bubble.classList.add('on'); show(t); }   // on the move: the line is shown on arrival
     if (speak && 'speechSynthesis' in window) { try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.rate = 1.05; u.pitch = 1.35; u.volume = 0.9; speechSynthesis.speak(u); } catch (e) { /* no voice on this device */ } }
   }
-  function toggleMenu(open = panel.hidden) { panel.hidden = !open; bodyBtn.setAttribute('aria-expanded', String(open)); if (open && rego) rego.wave = 0.9; }
-  function setQuiet(q) { isQuiet = q; store.set('rego-quiet', q ? '1' : '0'); quiet.setAttribute('aria-pressed', String(q)); quiet.textContent = q ? 'Talk' : 'Quiet'; bubble.classList.toggle('on', !q && !hidden && !!line); if (!q && line) show(line); if (q && 'speechSynthesis' in window) speechSynthesis.cancel(); }
+  function toggleMenu(open = panel.hidden) { panel.hidden = !open; bodyBtn.setAttribute('aria-expanded', String(open)); if (open && rego) rego.wave = 0.9; if (open) { shuffling = false; tx = x; } }
+  function setQuiet(q) { isQuiet = q; store.set('rego-quiet', q ? '1' : '0'); quiet.setAttribute('aria-pressed', String(q)); quiet.textContent = q ? 'Talk' : 'Quiet'; bubble.classList.toggle('on', !q && !hidden && !!line && !moving); if (!q && line && !moving) show(line); if (q && 'speechSynthesis' in window) speechSynthesis.cancel(); }
   function setHidden(hd) { hidden = hd; store.set('rego-hidden', hd ? '1' : '0'); host.classList.toggle('tucked', hd); tuck.textContent = hd ? 'REGO' : 'Hide'; tuck.title = hd ? 'Bring REGO back' : 'Tuck REGO away'; if (hd) { toggleMenu(false); bubble.classList.remove('on'); } else if (line && !isQuiet) { bubble.classList.add('on'); show(line); } fit(); }
   bodyBtn.onclick = () => toggleMenu(); quiet.onclick = () => setQuiet(!isQuiet); tuck.onclick = () => setHidden(!hidden);
   addEventListener('keydown', (e) => { if (e.key === 'Escape' && !panel.hidden) { toggleMenu(false); bodyBtn.focus(); } });
   setQuiet(isQuiet); setHidden(hidden);
 
+  // ---- moving about ----
+  function go(p) { if (!p || p === place) return; place = p; measure(); home = spot(p); shuffling = false;
+    if (still || hidden || Math.abs(home - x) < 6) { x = tx = home; moving = false; seat(); return; }
+    tx = home; moving = true; bubble.classList.remove('on'); toggleMenu(false); }
+  function step(dt) { const d = tx - x, far = Math.abs(d);
+    if (far < 0.6) { drive = 0;
+      if (moving) { moving = false; x = tx; seat(); idle = 0; if (line && !isQuiet && !hidden) { bubble.classList.add('on'); show(line); } }
+      shuffling = false; faceTo = x + bw / 2 > W / 2 + 1 ? -0.5 : 0.3; idle += dt;
+      // left alone for a while: a short, slow shuffle to one side and, next time, back home
+      if (idle > nextShuffle && panel.hidden && !hidden) { idle = 0; nextShuffle = 5 + Math.random() * 7; const out = Math.abs(x - home) > 2; const dir = home < 2 ? 1 : home > W - bw - 2 ? -1 : Math.random() < 0.5 ? -1 : 1;
+        tx = out ? home : Math.max(0, Math.min(W - bw, home + dir * (18 + Math.random() * 38))); shuffling = true; }
+      return; }
+    // pace: a slow shuffle, a steady roll, or a dash when the place is far away; it always eases in at the end
+    const v = shuffling ? 30 : Math.max(160, Math.min(1500, far * 3.6)), s = Math.sign(d); x += s * Math.min(far, v * dt); seat(); drive = s * v / 60; faceTo = s * (shuffling ? 0.75 : 1.25); }
+
   return {
-    say, get quiet() { return isQuiet; }, get hidden() { return hidden; },
+    say, go, get quiet() { return isQuiet; }, get hidden() { return hidden; }, get place() { return place; },
     setSpeak(on) { speak = on; if (!on && 'speechSynthesis' in window) speechSynthesis.cancel(); },
-    lookAt(x, y) { look = x; lookUp = y; }, roll(v) { speed = v; }, wave() { if (rego) rego.wave = 1.2; },
-    frame(dt) { if (!renderer || hidden) return; rego.update(still ? 0 : dt, still ? 0 : speed, look, lookUp); speed *= Math.pow(0.02, dt); renderer.render(scene, camera); },
+    lookAt(lx, ly) { look = lx; lookUp = ly; }, roll(v) { speed = v; }, wave() { if (rego) rego.wave = 1.2; },
+    // the middle of REGO on screen, and the box REGO and the speech bubble take up (so other things can keep clear)
+    cx() { const r = car.getBoundingClientRect(); return r.left + r.width / 2; },
+    box() { const a = car.getBoundingClientRect(); let left = a.left, right = a.right, top = a.top; const b = !panel.hidden ? panel : bubble.classList.contains('on') ? bubble : null; if (b) { const q = b.getBoundingClientRect(); left = Math.min(left, q.left); right = Math.max(right, q.right); top = Math.min(top, q.top); } return { left, right, top, width: right - left }; },
+    frame(dt) { if (hidden) return; if (!still) step(Math.min(dt, 0.05)); if (!renderer) return; rego.group.rotation.y += (faceTo - rego.group.rotation.y) * Math.min(1, dt * 7); rego.update(still ? 0 : dt, still ? 0 : speed + drive, moving || shuffling ? 0 : look, lookUp); speed *= Math.pow(0.02, dt); renderer.render(scene, camera); },
   };
 }

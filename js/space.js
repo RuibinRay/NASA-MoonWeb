@@ -13,8 +13,8 @@ const CAMS = {
 };
 
 export function createSpace(canvas, { small = false, still = false } = {}) {
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: !small, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small ? 1.25 : 1.75)); renderer.outputColorSpace = THREE.SRGBColorSpace;
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small ? 1.5 : 2)); renderer.outputColorSpace = THREE.SRGBColorSpace;
   const scene = new THREE.Scene(); scene.background = new THREE.Color(0x030712);
   const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 3000), look = new V3().copy(CAMS.open[1]); camera.position.copy(CAMS.open[0]);
   const sun = new THREE.DirectionalLight(0xfff4e6, 3.3); sun.position.set(-6, 5, 14); scene.add(sun, new THREE.AmbientLight(0x6f8fc0, 0.3));
