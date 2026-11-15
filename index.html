@@ -9,6 +9,8 @@
 <meta property="og:description" content="A cinematic journey through MOONKEEPER, a free browser game about surviving on the Moon and on Mars.">
 <meta property="og:image" content="assets/img/poster.jpg">
 <meta name="theme-color" content="#030712">
+<meta name="color-scheme" content="dark">
+<meta name="author" content="Ruibin Jin Yao">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23030712'/%3E%3Ccircle cx='26' cy='34' r='15' fill='%23D6DCE5'/%3E%3Ccircle cx='46' cy='20' r='7' fill='%23C96B44'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -37,22 +39,25 @@
 </header>
 
 <ol id="rail" aria-label="Where you are in the journey"></ol>
+<aside id="rego" aria-label="REGO, the robot from the game, your guide on this page"></aside>
 
 <main>
 <!-- 1. opening -->
-<section id="opening" class="cine" data-name="Launch" data-cam="open">
+<section id="opening" class="cine long" data-name="Launch" data-cam="open">
   <div class="stage">
     <video class="scrub on" data-src="assets/video/ship_far.mp4" poster="assets/video/ship_far.jpg" muted playsinline preload="none" aria-hidden="true"></video>
     <video class="scrub" data-src="assets/video/ship_ref.mp4" poster="assets/video/ship_ref.jpg" muted playsinline preload="none" aria-hidden="true"></video>
     <video class="scrub" data-src="assets/video/ship_journey.mp4" poster="assets/video/ship_journey.jpg" muted playsinline preload="none" aria-hidden="true"></video>
+    <video class="scrub" data-src="assets/video/rego_cockpit.mp4" poster="assets/video/rego_cockpit.jpg" muted playsinline preload="none" aria-hidden="true"></video>
     <i class="si">SI-generated</i>
     <div class="shade"></div>
     <div class="title">
-      <p class="kicker beat" data-at="0">One spaceship. Three worlds. One mission beyond Earth.</p>
-      <h1 class="beat" data-at="0">MOONKEEPER<span>BEYOND EARTH</span></h1>
-      <p class="lede beat" data-at="0.1">Survival is not just about staying alive. It's about building a future beyond our world.</p>
-      <p class="cta beat" data-at="0.1"><a class="btn" href="#worlds">Begin journey</a> <a class="btn ghost" href="https://ruibinray.github.io/NASA-MoonKeeper/" target="_blank" rel="noopener">Play the game</a></p>
+      <p class="kicker beat" data-at="0" data-until="0.72">One spaceship. Three worlds. One mission beyond Earth.</p>
+      <h1 class="beat" data-at="0" data-until="0.72">MOONKEEPER<span>BEYOND EARTH</span></h1>
+      <p class="lede beat" data-at="0.1" data-until="0.72">Survival is not just about staying alive. It's about building a future beyond our world.</p>
+      <p class="cta beat" data-at="0.1" data-until="0.72"><a class="btn" href="#worlds">Begin journey</a> <a class="btn ghost" href="https://ruibinray.github.io/NASA-MoonKeeper/" target="_blank" rel="noopener">Play the game</a></p>
     </div>
+    <p class="quote beat" data-at="0.78">"Welcome aboard, Commander."<span>REGO, your robot companion in the game</span></p>
     <p class="hint">Scroll to fly</p>
   </div>
 </section>
@@ -86,7 +91,7 @@
       <p>Born in Costa Rica with Chinese roots, and now studying in Boston. Ray is completing a Bachelor of Business Administration at Hult International Business School, double majoring in Finance and Business Analytics, and speaks Mandarin, Spanish and English.</p>
       <p>His portfolio lists his interests as finance, business analytics, energy and technology, international business, and entrepreneurship. He has worked in international business development for a company that makes long-duration energy storage, which is the same problem a Moon base faces every two-week night.</p>
       <p>MOONKEEPER is his entry for the NASA Space Apps Challenge 2026, made as team <b>Nasa Neo</b>: a game that teaches how people could live beyond Earth by letting players solve the problems themselves.</p>
-      <p class="row"><a class="btn small" href="https://ruibinray.github.io/" target="_blank" rel="noopener">Visit Ray's portfolio</a> <a class="btn small ghost" href="#contact">Contact</a></p>
+      <p class="row"><a class="btn small" href="https://ruibinray.github.io/Profile/" target="_blank" rel="noopener">Visit Ray's portfolio</a> <a class="btn small ghost" href="#contact">Contact</a></p>
       <p class="fine">Facts on this panel come from Ray's own portfolio. Nothing here has been added to it.</p>
     </div>
     <div class="console">
@@ -99,15 +104,16 @@
 
 <!-- 4. Moon -->
 <section id="moon" class="world" data-name="Moon" data-cam="moon">
-  <div class="cine short" id="moon-arrival">
+  <div class="cine mid" id="moon-arrival">
     <div class="stage">
       <video class="scrub on" data-src="assets/video/moon_flyover.mp4" poster="assets/video/moon_flyover.jpg" muted playsinline preload="none" aria-hidden="true"></video>
+      <video class="scrub" data-src="assets/video/rego_moon.mp4" poster="assets/video/rego_moon.jpg" muted playsinline preload="none" aria-hidden="true"></video>
       <i class="si">SI-generated</i>
       <div class="shade"></div>
       <div class="title left">
-        <p class="kicker beat" data-at="0.05">The Moon · Sea of Tranquility</p>
-        <h2 class="beat" data-at="0.15">The Moon is beautiful.<br>Surviving it is not.</h2>
-        <p class="lede beat" data-at="0.4">A meteor shower has struck every station on the Moon. You are the only one left at Tranquility Deep, a base inside a real lava-tube pit. Keep it running until the rescue ship lands.</p>
+        <p class="kicker beat" data-at="0.03" data-until="0.47">The Moon · Sea of Tranquility</p>
+        <h2 class="beat" data-at="0.08" data-until="0.47">The Moon is beautiful.<br>Surviving it is not.</h2>
+        <p class="lede beat" data-at="0.2" data-until="0.47">A meteor shower has struck every station on the Moon. You are the only one left at Tranquility Deep, a base inside a real lava-tube pit. Keep it running until the rescue ship lands.</p>
       </div>
     </div>
   </div>
@@ -151,16 +157,17 @@
 
 <!-- 5. Mars -->
 <section id="mars" class="world" data-name="Mars" data-cam="mars">
-  <div class="cine short" id="mars-arrival">
+  <div class="cine" id="mars-arrival">
     <div class="stage">
       <video class="scrub on" data-src="assets/video/mars_travel.mp4" poster="assets/video/mars_travel.jpg" muted playsinline preload="none" aria-hidden="true"></video>
       <video class="scrub" data-src="assets/video/mars_landing.mp4" poster="assets/video/mars_landing.jpg" muted playsinline preload="none" aria-hidden="true"></video>
+      <video class="scrub" data-src="assets/video/rego_mars.mp4" poster="assets/video/rego_mars.jpg" muted playsinline preload="none" aria-hidden="true"></video>
       <i class="si">SI-generated</i>
       <div class="shade"></div>
       <div class="title left">
-        <p class="kicker beat" data-at="0.05">Mars · Arcadia Planitia</p>
-        <h2 class="beat" data-at="0.15">The next frontier is red.</h2>
-        <p class="lede beat" data-at="0.45">The cheap way to Mars opens about once every 26 months, and the trip takes around nine months. The game's second world is an outpost on a cold plain with ice under the soil.</p>
+        <p class="kicker beat" data-at="0.04" data-until="0.64">Mars · Arcadia Planitia</p>
+        <h2 class="beat" data-at="0.1" data-until="0.64">The next frontier is red.</h2>
+        <p class="lede beat" data-at="0.3" data-until="0.64">The cheap way to Mars opens about once every 26 months, and the trip takes around nine months. The game's second world is an outpost on a cold plain with ice under the soil.</p>
       </div>
     </div>
   </div>
@@ -229,10 +236,17 @@
     <h2>Learn. Explore. Survive. Build.</h2>
     <div class="grid4" id="themes"></div>
   </div>
-  <div class="arrival tall">
-    <video class="loop" data-src="assets/video/final_wide.mp4" poster="assets/video/final_wide.jpg" muted loop playsinline preload="none" aria-hidden="true"></video>
-    <i class="si">SI-generated</i>
-    <div class="arrival-text center"><h2 class="huge">The future is not just somewhere we go.<span>It is something we learn to build.</span></h2><p><a class="btn big" href="https://ruibinray.github.io/NASA-MoonKeeper/" target="_blank" rel="noopener">Start your mission</a></p></div>
+  <div class="cine mid" id="final">
+    <div class="stage">
+      <video class="scrub on" data-src="assets/video/final_wide.mp4" poster="assets/video/final_wide.jpg" muted playsinline preload="none" aria-hidden="true"></video>
+      <video class="scrub" data-src="assets/video/rego_farewell.mp4" poster="assets/video/rego_farewell.jpg" muted playsinline preload="none" aria-hidden="true"></video>
+      <i class="si">SI-generated</i>
+      <div class="shade"></div>
+      <div class="title">
+        <h2 class="huge beat" data-at="0.06" data-until="0.47">The future is not just somewhere we go.<span>It is something we learn to build.</span></h2>
+        <p class="cta beat" data-at="0.56"><a class="btn big" href="https://ruibinray.github.io/NASA-MoonKeeper/" target="_blank" rel="noopener">Start your mission</a></p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -246,7 +260,7 @@
       <p><button class="btn" id="hail" type="button" aria-expanded="false" aria-controls="channels">Establish contact</button></p>
       <ul id="channels" class="channels" hidden>
         <li><span>Email</span><a href="mailto:ruibinjinyao@gmail.com">ruibinjinyao@gmail.com</a></li>
-        <li><span>Portfolio</span><a href="https://ruibinray.github.io/" target="_blank" rel="noopener">ruibinray.github.io</a></li>
+        <li><span>Portfolio</span><a href="https://ruibinray.github.io/Profile/" target="_blank" rel="noopener">ruibinray.github.io/Profile</a></li>
         <li><span>GitHub</span><a href="https://github.com/RuibinRay" target="_blank" rel="noopener">github.com/RuibinRay</a></li>
         <li><span>LinkedIn</span><a href="https://www.linkedin.com/in/edwin-ruibin-jin-yao-a6b050239" target="_blank" rel="noopener">Edwin Ruibin Jin Yao</a></li>
         <li><span>The game</span><a href="https://ruibinray.github.io/NASA-MoonKeeper/" target="_blank" rel="noopener">Play MOONKEEPER</a></li>
@@ -258,7 +272,13 @@
     <div class="wrap">
       <p><b>Credits.</b> Earth and Moon textures: NASA (Blue Marble, CGI Moon Kit). Mars globe: drawn from NASA's MOLA elevation data (heights are real, colours are an illustration). Gameplay clips: recorded from MOONKEEPER. Cinematic clips and stills marked "SI-generated": made with Higgsfield (Seedance 2.5 and its image model) from written prompts and the game's own pictures. This site's code and text: written with Claude under human direction. 3D: Three.js. Scrolling: GSAP. Fonts: Chakra Petch and Inter.</p>
       <p>MOONKEEPER is a student project for the NASA Space Apps Challenge 2026. It is not made, certified or endorsed by NASA, and it uses no NASA logo.</p>
-      <p><a href="https://ruibinray.github.io/NASA-MoonKeeper/" target="_blank" rel="noopener">Play the game</a> · <a href="#science">Scientific sources</a> · <a href="https://github.com/RuibinRay/NASA-MoonWeb" target="_blank" rel="noopener">This site's source</a> · <a href="https://ruibinray.github.io/" target="_blank" rel="noopener">Ruibin Jin Yao</a></p>
+      <p><a href="https://ruibinray.github.io/NASA-MoonKeeper/" target="_blank" rel="noopener">Play the game</a> · <a href="#science">Scientific sources</a> · <a href="https://github.com/RuibinRay/NASA-MoonWeb" target="_blank" rel="noopener">This site's source</a></p>
+      <div class="author">
+        <p class="kicker">Author</p>
+        <p class="author-name">Ruibin Jin Yao</p>
+        <p class="author-role">Creator of MOONKEEPER and this site · Team Nasa Neo · NASA Space Apps Challenge 2026</p>
+        <p><a class="btn" href="https://ruibinray.github.io/Profile/" target="_blank" rel="noopener">View my portfolio</a></p>
+      </div>
     </div>
   </footer>
 </section>

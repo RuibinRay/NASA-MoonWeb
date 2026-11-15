@@ -1,0 +1,24 @@
+{
+ "resolution": "2k",
+ "videoResolution": "720p",
+ "style": "The robot is REGO, exactly as in the first reference image: a small friendly helper robot about knee high, with a white rounded body with one orange band, two dark tank treads, a wide rounded white head with orange ear discs and one dark glass visor showing two big glowing cyan oval eyes, a thin antenna with a small amber light, a round warm headlamp on its chest and two short white arms with dark hands. Shown as a real physical robot. Grounded space-agency engineering realism with the restrained production design of a prestige science-fiction film. Photorealistic cinematic film still, anamorphic lens, natural film colour grade, ultra detailed. No people, no text, no letters, no numbers, no labels, no logos, no flags, no insignia, no watermark.",
+ "videoStyle": "Physically believable motion, steady cinematic camera, no cuts, no text, no logos. Keep the robot's shape, colours and face exactly as in the first frame: white body, orange band, dark treads, dark visor with two glowing cyan eyes.",
+ "jobs": [
+  { "id": "rego_cockpit", "refs": ["https://ruibinray.github.io/NASA-MoonKeeper/assets/img/c_rego.jpg"],
+    "still": "REGO inside the cockpit of a spacecraft, standing on the deck between two empty pilot seats, turned three-quarters toward the camera. Behind it a wide curved canopy window shows deep space with a small blue Earth, a tiny grey Moon and a tiny rust-red Mars. Beside REGO a pale cyan holographic star map floats above a console. Soft cool light from the window, warm light from its chest lamp.",
+    "video": "REGO turns its head toward the camera, its cyan eyes blink once, and it raises one short arm and waves; the holographic star map beside it brightens and slowly turns.",
+    "seconds": 5 },
+  { "id": "rego_moon", "refs": ["https://ruibinray.github.io/NASA-MoonKeeper/assets/img/c_rego.jpg", "https://ruibinray.github.io/NASA-MoonKeeper/assets/img/title2.jpg"],
+    "still": "REGO on the grey surface of the Moon beside a solar panel that has been knocked over and cracked, looking up at it. Behind, a white lunar station at the rim of a wide dark pit, as in the second reference image, with small amber warning lights. Hard low sunlight, long black shadows, pure black sky, a small blue Earth above the horizon. Tread marks in the dust.",
+    "video": "REGO rolls a little closer to the broken solar panel on its treads, leaving marks in the dust, points one short arm at the crack, then turns its head to look at the camera. Amber warning lights pulse on the station behind. No sound, no smoke, no fire.",
+    "seconds": 5 },
+  { "id": "rego_mars", "refs": ["https://ruibinray.github.io/NASA-MoonKeeper/assets/img/c_rego.jpg", "https://ruibinray.github.io/NASA-MoonKeeper/assets/img/mars/mr_base.jpg"],
+    "still": "REGO on a rust-brown rocky Martian plain at the foot of a lander's ramp, looking out toward a small outpost of white habitat modules with a low dome and a field of solar panels, as in the second reference image. A butterscotch-tan hazy sky with a small pale Sun, fine dust drifting low over the ground, a wall of dust from a distant storm on the horizon.",
+    "video": "REGO rolls forward off the ramp onto the Martian soil, its treads raising a little dust, stops, and turns its head slowly from the outpost to the camera while thin dust blows past.",
+    "seconds": 5 },
+  { "id": "rego_farewell", "refs": ["https://ruibinray.github.io/NASA-MoonKeeper/assets/img/c_rego.jpg"],
+    "still": "REGO seen from behind and slightly to one side, standing at a large observation window of a spacecraft, looking out at the big blue Earth, the small grey Moon and a tiny rust-red Mars far away. Its chest lamp throws a soft warm glow on the window frame; the cabin is dark and quiet.",
+    "video": "REGO turns round from the window to face the camera, its cyan eyes curve into a happy shape, and it lifts one short arm and waves goodbye while the Earth turns slowly behind it.",
+    "seconds": 5 }
+ ]
+}

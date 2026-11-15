@@ -173,3 +173,57 @@ footer{border-top:1px solid var(--line);margin-top:8vh;font-size:13.5px;color:va
   html{scroll-behavior:auto}.cine,.cine.short{height:auto}.stage{position:relative;height:100vh}.beat{opacity:1;transform:none;transition:none}.hint{animation:none}.space{height:120vh}
 }
 .no-gsap .beat{opacity:1;transform:none}
+
+/* ---------- film stages of different lengths ---------- */
+.cine.long{height:480vh}.cine.mid{height:320vh}
+.stage{height:100svh}
+@media (max-width:900px){.cine.long{height:400vh}.cine.mid{height:260vh}.title{bottom:calc(132px + 4vh)}.title.left{bottom:calc(132px + 4vh)}.hint{display:none}}
+@media (prefers-reduced-motion: reduce){.cine.long,.cine.mid{height:auto}}
+
+/* ---------- REGO, the guide in the corner ---------- */
+.rego{position:fixed;z-index:30;left:max(14px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom));display:grid;grid-template-columns:auto 1fr;grid-template-areas:'body bubble' 'tools tools';align-items:end;gap:0 6px;pointer-events:none;max-width:min(430px,calc(100vw - 28px))}
+.rego>*{pointer-events:auto}
+.rego-body{grid-area:body;width:112px;height:132px;padding:0;border:0;background:none;cursor:pointer;border-radius:16px;filter:drop-shadow(0 10px 18px rgba(0,0,0,.55))}
+.rego-body canvas{width:100%;height:100%}
+.rego-flat{display:grid;place-items:center;width:100%;height:100%;font:700 14px var(--head);color:var(--cyan)}
+.rego-bubble{grid-area:bubble;align-self:center;position:relative;background:rgba(10,20,40,.94);border:1px solid rgba(98,221,243,.45);border-radius:16px 16px 16px 4px;padding:11px 14px;margin-bottom:26px;opacity:0;transform:translateY(8px) scale(.97);transform-origin:left bottom;transition:opacity .25s,transform .25s;box-shadow:0 12px 34px rgba(0,0,0,.5)}
+.rego-bubble.on{opacity:1;transform:none}
+.rego-bubble p{margin:0;font-size:14.5px;line-height:1.45;color:var(--white);min-height:1.45em}
+.rego-bubble::before{content:'REGO';display:block;font:700 10.5px/1 var(--head);letter-spacing:.2em;color:var(--cyan);margin-bottom:5px}
+.rego-tools{grid-area:tools;display:flex;gap:6px;padding-left:6px;margin-top:-4px}
+.rego-tools button,.rego-menu button{font:600 11.5px/1 var(--head);letter-spacing:.06em;color:var(--silver);background:rgba(3,7,18,.82);border:1px solid var(--line);border-radius:999px;padding:6px 10px;cursor:pointer}
+.rego-tools button:hover,.rego-menu button:hover,.rego-tools button[aria-pressed="true"]{color:var(--white);border-color:var(--cyan)}
+.rego-menu{grid-area:bubble;align-self:center;background:rgba(10,20,40,.96);border:1px solid rgba(98,221,243,.5);border-radius:16px;padding:12px;margin-bottom:26px;display:flex;flex-wrap:wrap;gap:6px;box-shadow:0 12px 34px rgba(0,0,0,.5);z-index:2}
+.rego-menu[hidden]{display:none}.rego-menu-h{flex:1 0 100%;margin:0 0 4px;font:700 12px/1 var(--head);letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+.rego-menu button{font-size:12.5px;padding:8px 12px;color:var(--white)}
+.rego-menu:not([hidden])~.rego-body{filter:drop-shadow(0 0 14px rgba(98,221,243,.6))}
+.rego:has(.rego-menu:not([hidden])) .rego-bubble{display:none}
+.rego.tucked .rego-body,.rego.tucked .rego-bubble,.rego.tucked .rego-menu,.rego.tucked #rego-quiet{display:none}
+.rego.tucked .rego-tools button:first-child{display:none}
+@media (max-width:900px){.rego-body{width:78px;height:92px}.rego-bubble{padding:9px 11px;margin-bottom:14px}.rego-bubble p{font-size:13.5px}.rego-menu{margin-bottom:14px}}
+footer{padding-bottom:150px}
+
+/* ---------- every device ---------- */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scrollbar-color:#3a4a63 #030712;scrollbar-width:thin}
+*{-webkit-tap-highlight-color:transparent}
+a,button,input,label{touch-action:manipulation}
+::-webkit-scrollbar{width:11px;height:11px}::-webkit-scrollbar-track{background:#030712}::-webkit-scrollbar-thumb{background:#3a4a63;border-radius:8px;border:2px solid #030712}::-webkit-scrollbar-thumb:hover{background:#62DDF3}
+::selection{background:rgba(98,221,243,.35)}
+.btn.ghost,.wl,.console,.card,.tabpanel,.trailer{-webkit-backdrop-filter:blur(8px)}
+#bar{padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right));padding-top:max(12px,env(safe-area-inset-top))}
+#worlds{touch-action:pan-y}
+input[type=range]{height:28px}
+@media (hover:none){.wl em{padding:6px 0;display:inline-block}#rail{display:none}}
+@media (forced-colors:active){.btn,.wl,.console,.card,.rego-bubble{border:1px solid CanvasText}}
+
+.quote{position:absolute;z-index:2;right:6vw;bottom:16vh;margin:0;max-width:440px;text-align:right;font:600 clamp(22px,2.6vw,34px)/1.2 var(--head);color:var(--white);text-shadow:0 2px 24px rgba(3,7,18,.9)}
+.quote span{display:block;font:500 13px/1.4 var(--body);letter-spacing:.04em;color:var(--silver);margin-top:8px}
+@media (max-width:900px){.quote{right:16px;left:16px;bottom:calc(132px + 4vh);text-align:left}}
+@media (max-width:900px){.rego::before{content:'';position:fixed;left:0;right:0;bottom:0;height:168px;background:linear-gradient(rgba(3,7,18,0),rgba(3,7,18,.92) 62%);pointer-events:none;z-index:-1}.rego.tucked::before{display:none}}
+@media (min-width:901px){.title.left{bottom:max(13vh,184px)}}
+@media (min-width:901px) and (max-width:1240px){.title{bottom:max(11vh,184px)}}
+.author{margin-top:34px;padding:26px 24px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(135deg,rgba(61,155,255,.10),rgba(10,20,40,.55));text-align:center}
+.author .kicker{margin:0 0 8px}.author-name{margin:0;font:700 clamp(24px,3.2vw,34px)/1.15 var(--head);letter-spacing:.04em;color:var(--white)}
+.author-role{margin:8px auto 16px;max-width:520px;color:var(--silver);font-size:14px}.author p:last-child{margin-bottom:0}
+#bar{background:linear-gradient(180deg,rgba(3,7,18,.96) 0,rgba(3,7,18,.8) 58%,rgba(3,7,18,0));padding-bottom:22px}
+.rego-bubble:not(.on){pointer-events:none}

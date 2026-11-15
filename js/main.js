@@ -1,13 +1,15 @@
 // MOONKEEPER: Beyond Earth — the page's behaviour: the scroll-driven films, the three worlds, the exhibits, the sound.
 // Scrolling drives everything and works backwards as well as forwards. If the 3D scene, a film or the animation
 // library fails to load, the page is still readable and every button still works.
-import { WORLDS, TIMELINE, ROOMS, JOBS, MOON_REEL, MARS_REEL, MARS_CARDS, GAME_TABS, MODES, KEYS, FLOW, SI_LIST, ARCH, COMPARE, QUIZ, KIND, SOURCES, THEMES } from './data.js';
+import { WORLDS, TIMELINE, ROOMS, JOBS, MOON_REEL, MARS_REEL, MARS_CARDS, GAME_TABS, MODES, KEYS, FLOW, SI_LIST, ARCH, COMPARE, QUIZ, KIND, SOURCES, THEMES, REGO_CUES, GAME } from './data.js';
 
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 const still = matchMedia('(prefers-reduced-motion: reduce)').matches, small = matchMedia('(max-width: 900px)').matches || navigator.maxTouchPoints > 1 && innerWidth < 1100;
 if (!window.gsap) document.documentElement.classList.add('no-gsap');
+// go to a height at once (older Safari has no 'instant', and the page's smooth scrolling would otherwise glide there)
+const jump = (y) => { const h = document.documentElement, was = h.style.scrollBehavior; h.style.scrollBehavior = 'auto'; scrollTo(0, y); h.style.scrollBehavior = was; };
 
 // ------------------------------------------------------------------ the parts of the page that are made from data
 const pick = (list, host, detail, render) => { const btns = list.map((item, i) => { const li = el('li'), b = el('button', '', item[0]); b.type = 'button'; b.setAttribute('aria-pressed', 'false'); b.onclick = () => { btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b))); detail.innerHTML = render(item, i); }; li.appendChild(b); host.appendChild(li); return b; }); btns[0].click(); };
@@ -41,7 +43,10 @@ const sections = $$('main > section'), rail = $('#rail');
 sections.forEach((s) => { const li = el('li'), a = el('a', '', `<span>${s.dataset.name}</span><i></i>`); a.href = '#' + s.id; li.appendChild(a); rail.appendChild(li); s._rail = a; });
 
 // ------------------------------------------------------------------ films: fetched only when they come near
-const wake = (v) => { if (!v.src && v.dataset.src) { v.src = v.dataset.src; v.load(); } };
+// A film that follows the scroll is never "played", and iPhones and iPads draw nothing until a film has played once:
+// so each one is started and stopped again, silently, as soon as it has loaded.
+const prime = (v) => { if (v._primed || !v.classList.contains('scrub')) return; v._primed = true; const p = v.play(); if (p && p.then) p.then(() => v.pause()).catch(() => {}); };
+const wake = (v) => { if (!v.src && v.dataset.src) { v.preload = 'auto'; v.setAttribute('webkit-playsinline', ''); v.disableRemotePlayback = true; v.addEventListener('loadeddata', () => prime(v), { once: true }); v.src = v.dataset.src; v.load(); } };
 const near = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { $$('video[data-src]', e.target).forEach(wake); near.unobserve(e.target); } }), { rootMargin: '150% 0px' });
 $$('.cine, .arrival, .shot, .reel').forEach((x) => near.observe(x));
 const play = new IntersectionObserver((es) => es.forEach((e) => { const v = e.target; if (e.isIntersecting && !still) { wake(v); v.play().catch(() => {}); } else v.pause(); }), { threshold: 0.25 });
@@ -52,8 +57,17 @@ if (still) $$('video.loop').forEach((v) => { v.controls = true; });
 let space = null;
 try { const { createSpace } = await import('./space.js'); space = createSpace($('#space'), { small, still }); } catch (err) { console.warn('3D scene not available:', err); $('#space').style.display = 'none'; }
 
+// ------------------------------------------------------------------ REGO: always there, with something to say about wherever you are
+let rego = null;
+try { const { createRegoGuide } = await import('./rego.js'); const to = (id) => () => jump($(id).offsetTop);
+  rego = createRegoGuide($('#rego'), { still, small, menu: [['Earth', to('#earth')], ['Moon', to('#moon')], ['Mars', to('#mars')], ['The game', to('#game')], ['Science', to('#science')], ['How it was built', to('#built')], ['Contact', to('#contact')], ['Play MOONKEEPER', () => window.open(GAME, '_blank', 'noopener')]] }); } catch (err) { console.warn('REGO not available:', err); $('#rego').remove(); }
+const cues = REGO_CUES.map(([sel, text, mood, a, b]) => ({ el: $(sel), text, mood, a, b })).filter((c) => c.el);
+function regoCue(vh) { if (!rego) return; if (hot) return rego.say(WORLDS[hot].say, 'think'); let pickd = null; const mid = vh * 0.55;
+  for (const c of cues) { const r = c.el.getBoundingClientRect(); if (r.top > mid || r.bottom < mid) continue; if (c.a != null) { const p = clamp(-r.top / Math.max(1, c.el.offsetHeight - vh), 0, 1); if (p < c.a || p >= c.b) continue; } pickd = c; }
+  if (pickd) rego.say(pickd.text, pickd.mood); }
+
 // ------------------------------------------------------------------ scroll: one pass each frame
-const cines = $$('.cine').map((sec) => ({ sec, vids: $$('video.scrub', sec), beats: $$('.beat', sec).map((b) => [b, parseFloat(b.dataset.at)]), cur: -1 }));
+const cines = $$('.cine').map((sec) => ({ sec, vids: $$('video.scrub', sec), beats: $$('.beat', sec).map((b) => [b, parseFloat(b.dataset.at), b.dataset.until ? parseFloat(b.dataset.until) : 9]), cur: -1 }));
 const labels = $('#world-labels'), info = $('#world-info'), wl = Object.fromEntries($$('.wl').map((b) => [b.dataset.world, b])), veil = $('#veil');
 let active = null, hot = null, lastY = -1, dragging = null;
 function onScroll() {
@@ -65,29 +79,32 @@ function onScroll() {
   const inWorlds = cur.id === 'worlds'; labels.classList.toggle('on', inWorlds); if (!inWorlds && hot) setHot(null);
   // the films follow the scroll: forwards and backwards
   for (const c of cines) { const r = c.sec.getBoundingClientRect(), span = c.sec.offsetHeight - vh; if (r.bottom < -vh || r.top > vh * 2) continue; const p = clamp(-r.top / Math.max(1, span), 0, 1), n = c.vids.length, k = Math.min(n - 1, Math.floor(p * n));
-    if (k !== c.cur) { c.cur = k; c.vids.forEach((v, i) => v.classList.toggle('on', i === k)); } c.want = clamp(p * n - k, 0, 1); for (const [b, at] of c.beats) b.classList.toggle('in', p >= at); }
-  lastY = y;
+    if (k !== c.cur) { c.cur = k; c.vids.forEach((v, i) => v.classList.toggle('on', i === k)); } c.want = clamp(p * n - k, 0, 1); for (const [b, at, until] of c.beats) b.classList.toggle('in', p >= at && p < until); }
+  if (rego && lastY >= 0) rego.roll((y - lastY) / 14);   // his treads turn with the page
+  regoCue(vh); lastY = y;
 }
 // a film is moved toward the wanted moment a little at a time, so fast scrolling stays smooth
 function scrub() { for (const c of cines) { const v = c.vids[c.cur]; if (!v || c.want == null || still) continue; if (v.readyState < 2 || !v.duration) { wake(v); continue; } const t = c.want * (v.duration - 0.05), d = t - v.currentTime; if (Math.abs(d) > 0.02 && !v.seeking) v.currentTime = v.currentTime + d * 0.5; } }
 addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onScroll);
-{ const y = new URLSearchParams(location.search).get('y'); if (y) scrollTo({ top: +y, behavior: 'instant' }); }   // ?y=1234 opens the page at that height (for links and for checking)
+{ const y = new URLSearchParams(location.search).get('y'); if (y) jump(+y); }   // ?y=1234 opens the page at that height (for links and for checking)
 onScroll();
 
 // ------------------------------------------------------------------ the three worlds: hover, click, drag
-function setHot(id) { if (hot === id) return; hot = id; space && space.hover(id); for (const k in wl) wl[k].classList.toggle('hot', k === id); info.textContent = id ? WORLDS[id].say : ''; info.classList.toggle('on', !!id); }
+function setHot(id) { if (hot === id) return; hot = id; regoCue(innerHeight); space && space.hover(id); for (const k in wl) wl[k].classList.toggle('hot', k === id); info.textContent = id ? WORLDS[id].say : ''; info.classList.toggle('on', !!id); }
 function go(id) {
   const target = $(WORLDS[id].to); if (!target) return; setHot(id);
-  const arrive = () => { veil.style.opacity = 1; setTimeout(() => { scrollTo({ top: target.offsetTop, behavior: 'instant' }); onScroll(); space && space.setCam(target.dataset.cam); veil.style.opacity = 0; }, still ? 0 : 420); };
+  const arrive = () => { veil.style.opacity = 1; setTimeout(() => { jump(target.offsetTop); onScroll(); space && space.setCam(target.dataset.cam); veil.style.opacity = 0; }, still ? 0 : 420); };
   if (space && !still && active && active.id === 'worlds') space.travel(id, arrive); else arrive();
 }
 for (const k in wl) { wl[k].onclick = () => go(k); wl[k].onmouseenter = wl[k].onfocus = () => setHot(k); wl[k].onmouseleave = wl[k].onblur = () => setHot(null); }
 $$('#bar nav a[data-world]').forEach((a) => (a.onclick = (e) => { if (active && active.id === 'worlds') { e.preventDefault(); go(a.dataset.world); } }));
 const worldsSec = $('#worlds');
-addEventListener('pointermove', (e) => { if (!space || !active || active.id !== 'worlds') return; if (dragging) { space.setDrag(dragging.yaw - (e.clientX - dragging.x) / 380, dragging.pitch + (e.clientY - dragging.y) / 900); dragging.moved = true; return; } if (e.target.closest('.wl, #bar, #rail')) return; space.point(e.clientX, e.clientY); setHot(space.pick()); });
+addEventListener('pointermove', (e) => { if (rego && e.pointerType !== 'touch') rego.lookAt(clamp(((e.clientX - 70) / innerWidth) * 2.2, -1, 1), clamp(((innerHeight - 90 - e.clientY) / innerHeight) * 1.6, -0.4, 1)); if (!space || !active || active.id !== 'worlds') return; if (dragging) { space.setDrag(dragging.yaw - (e.clientX - dragging.x) / 380, dragging.pitch + (e.clientY - dragging.y) / 900); dragging.moved = true; return; } if (e.target.closest('.wl, #bar, #rail')) return; space.point(e.clientX, e.clientY); setHot(space.pick()); });
 worldsSec.addEventListener('pointerdown', (e) => { if (!space || e.target.closest('.wl')) return; dragging = { x: e.clientX, y: e.clientY, yaw: space.drag.yaw, pitch: space.drag.pitch, moved: false }; });
 addEventListener('pointerup', (e) => { if (!dragging) return; const d = dragging; dragging = null; if (!d.moved && space && active && active.id === 'worlds') { space.point(e.clientX, e.clientY); const id = space.pick(); if (id) go(id); } });
-function placeLabels() { if (!space || !labels.classList.contains('on')) return; for (const k in wl) { const s = space.screen(k); wl[k].style.transform = `translate(-50%,0) translate(${s.x.toFixed(1)}px,${(s.bottom + 14).toFixed(1)}px)`; wl[k].style.visibility = s.shown ? 'visible' : 'hidden'; } }
+const regoHost = $('#rego');
+// A world's label sits under its globe, but never under REGO and his speech bubble.
+function placeLabels() { if (!space || !labels.classList.contains('on')) return; const rb = regoHost && !regoHost.classList.contains('tucked') ? regoHost.getBoundingClientRect() : null; for (const k in wl) { const s = space.screen(k); let ly = s.bottom + 14; if (rb && rb.width && s.x - 95 < rb.right && ly + wl[k].offsetHeight > rb.top - 10) ly = rb.top - 10 - wl[k].offsetHeight; wl[k].style.transform = `translate(-50%,0) translate(${s.x.toFixed(1)}px,${ly.toFixed(1)}px)`; wl[k].style.visibility = s.shown ? 'visible' : 'hidden'; } }
 
 // ------------------------------------------------------------------ exhibits
 // the lunar day: sunlight on the panels and an example battery, over 29.5 Earth days
@@ -115,13 +132,13 @@ function placeLabels() { if (!space || !labels.classList.contains('on')) return;
 { const btn = $('#sound'); let ctx = null, gain = null; const start = () => { ctx = new (window.AudioContext || window.webkitAudioContext)(); gain = ctx.createGain(); gain.gain.value = 0; gain.connect(ctx.destination);
     const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 220; lp.connect(gain); for (const f of [55, 55.6, 82.4]) { const o = ctx.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f; const g = ctx.createGain(); g.gain.value = 0.16; o.connect(g); g.connect(lp); o.start(); }   // the engines: a low hum
     for (const [f, v] of [[220, 0.035], [329.6, 0.025], [440, 0.014]]) { const o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = f; const g = ctx.createGain(); g.gain.value = v; const l = ctx.createOscillator(); l.frequency.value = 0.07 + f / 9000; const lg = ctx.createGain(); lg.gain.value = v * 0.7; l.connect(lg); lg.connect(g.gain); o.connect(g); g.connect(gain); o.start(); l.start(); } };   // a quiet chord that breathes
-  btn.onclick = () => { const on = btn.getAttribute('aria-pressed') !== 'true'; if (on && !ctx) start(); if (ctx) { ctx.resume(); gain.gain.linearRampToValueAtTime(on ? 0.5 : 0, ctx.currentTime + 0.6); } btn.setAttribute('aria-pressed', String(on)); btn.textContent = on ? 'Sound: on' : 'Sound: off'; btn.title = on ? 'Sound is on. Click to mute.' : 'Sound is off. Turn on the engine hum and music.'; }; }
+  btn.onclick = () => { const on = btn.getAttribute('aria-pressed') !== 'true'; if (on && !ctx) start(); if (ctx) { ctx.resume(); gain.gain.linearRampToValueAtTime(on ? 0.5 : 0, ctx.currentTime + 0.6); } rego && rego.setSpeak(on); btn.setAttribute('aria-pressed', String(on)); btn.textContent = on ? 'Sound: on' : 'Sound: off'; btn.title = on ? 'Sound is on, and REGO speaks aloud. Click to mute.' : 'Sound is off. Turn on the engine hum, the music and REGO\'s voice.'; }; }
 
 // ------------------------------------------------------------------ gentle entrances (only if the animation library arrived)
 if (window.gsap && window.ScrollTrigger && !still) { gsap.registerPlugin(ScrollTrigger); ScrollTrigger.batch('.scene-row, .console, .card, .trailer, .terminal, .reel figure', { start: 'top 88%', once: true, onEnter: (els) => gsap.fromTo(els, { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.07, ease: 'power2.out', overwrite: true }) }); }
 
 // ------------------------------------------------------------------ the frame loop
 let last = performance.now();
-function frame(now) { const dt = Math.min(0.05, (now - last) / 1000); last = now; scrub(); if (space) { space.frame(dt); placeLabels(); } requestAnimationFrame(frame); }
+function frame(now) { const dt = Math.min(0.05, (now - last) / 1000); last = now; scrub(); if (space) { space.frame(dt); placeLabels(); } if (rego) rego.frame(dt); requestAnimationFrame(frame); }
 requestAnimationFrame(frame);
-window.MOONWEB = { space, go, onScroll, step: (dt = 0.016) => { scrub(); if (space) { space.frame(dt); placeLabels(); } } };   // for testing
+window.MOONWEB = { space, rego, go, onScroll, step: (dt = 0.016) => { scrub(); if (space) { space.frame(dt); placeLabels(); } if (rego) rego.frame(dt); } };   // for testing

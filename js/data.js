@@ -118,3 +118,44 @@ export const THEMES = [
   ['Creative learning', 'Learn by doing the job yourself, with the explanation arriving at the moment you need it.'],
 ];
 export { GAME };
+
+// What REGO says as you travel. Each cue: [element, text, mood, from, to]. With from/to, the cue belongs to a film stage and
+// is said while the scroll is between those two fractions of it; without, it is said while that element is in the middle
+// of the screen. Later cues win over earlier ones, so the small things inside a section override the section's own line.
+export const REGO_CUES = [
+  ['#opening', "Hello, Commander. I'm REGO. Scroll, and I'll fly with you.", 'joy', 0, 0.25],
+  ['#opening', 'This is our ship: four engines, two solar wings, and me.', 'happy', 0.25, 0.5],
+  ['#opening', 'Engines up! Hold on to something.', 'alert', 0.5, 0.75],
+  ['#opening', 'Welcome aboard. We have three destinations ahead of us.', 'joy', 0.75, 1.01],
+  ['#worlds', "Three worlds. Point at one and I'll tell you about it. Click it and we'll fly there.", 'happy'],
+  ['#earth', 'Earth. Home of my creator, and where this whole adventure began.', 'happy'],
+  ['#earth .console:first-child', "That's Ray. He built my game for the NASA Space Apps Challenge.", 'joy'],
+  ['#earth .console:last-child', "Seven steps from an idea to a live game. Pick one and I'll light it up.", 'think'],
+  ['#moon-arrival', 'The Moon. Beautiful, isn\'t it? Surviving it is another matter.', 'happy', 0, 0.5],
+  ['#moon-arrival', "We've got a problem, Commander. That solar panel isn't going to fix itself.", 'worried', 0.5, 1.01],
+  ['#moon .scene-row:nth-of-type(1)', 'No air means nothing slows a meteoroid down. Every strike in the game really happened.', 'alert'],
+  ['#moon .scene-row:nth-of-type(2)', 'Every room is a bubble of air. Patch the hole, or lock the door and save the rest.', 'worried'],
+  ['#moon .scene-row:nth-of-type(3)', "Eleven rooms, one Power Board. Pick a room and I'll explain it.", 'think'],
+  ['#moon .scene-row:nth-of-type(4)', "Sixteen jobs, all done by hand. Welding is my favourite. Don't tell the wrench.", 'joy'],
+  ['#moon .scene-row:nth-of-type(5)', 'Two weeks without the Sun. Drag the slider: fill the battery before sunset!', 'worried'],
+  ['#moon-reel', 'These clips are straight from the game. No tricks.', 'happy'],
+  ['#moon .trailer', "Thirty seconds, and you've seen the whole thing. Then come and play.", 'joy'],
+  ['#mars-arrival', 'Next stop: Mars. About nine months away, if we leave at the right moment.', 'think', 0, 0.34],
+  ['#mars-arrival', 'Hold tight. The air is thin here, but it still helps us slow down.', 'alert', 0.34, 0.67],
+  ['#mars-arrival', "Commander, we've made it to Mars. Things work differently here.", 'joy', 0.67, 1.01],
+  ['#mars .status', 'You can play this part today. It is still growing, and it says so.', 'happy'],
+  ['#mars-cards', 'Thin air, hard cold, and dust. Most numbers on these cards were measured on Mars.', 'think'],
+  ['#mars-reel', 'In the game you can walk into the Command Habitat and say hello to the crew.', 'joy'],
+  ['#game', 'Let me explain the game. Pick a tab.', 'happy'],
+  ['#game .two', "In the game, press H and I'll tell you what to do next. That's my job.", 'joy'],
+  ['#built', 'I may be a robot, but making me work took quite a bit of human effort.', 'happy'],
+  ['#built .two', 'A person decided everything. The tools just typed fast.', 'think'],
+  ['#science', "Good question. Let's see what the real data tells us.", 'think'],
+  ['#science .two:nth-of-type(1)', 'Drop the ball. On the Moon I could jump right over you.', 'joy'],
+  ['#science .two:nth-of-type(2)', "Real, simplified, or made up? Guess, and I'll tell you.", 'happy'],
+  ['#goal', 'Learn. Explore. Survive. Build. Usually in that order.', 'happy'],
+  ['#final', "You've seen where this began, and what it takes to survive.", 'happy', 0, 0.5],
+  ['#final', 'Ready for your own mission, Commander?', 'joy', 0.5, 1.01],
+  ['#contact', "Want to contact my creator? Press the button and I'll open a channel.", 'happy'],
+  ['footer', 'That is who built me. The portfolio is one click away, Commander.', 'joy'],
+];

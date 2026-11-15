@@ -7,7 +7,7 @@ const V3 = THREE.Vector3, lerp = (a, b, k) => a + (b - a) * k, ease = (t) => t *
 export const PLACE = { earth: { pos: new V3(-8.2, 0, 0), r: 3 }, moon: { pos: new V3(-1.6, 1.5, -2.2), r: 0.82 }, mars: { pos: new V3(8.2, -0.4, -5), r: 1.6 } };
 // Where the camera stands for each part of the page: [camera position, the point it looks at]
 const CAMS = {
-  open: [new V3(0, 1.2, 24), new V3(0, 0, 0)], worlds: [new V3(0.6, 2.6, 19), new V3(0, 1.9, -1.5)],
+  open: [new V3(0, 1.2, 24), new V3(0, 0, 0)], worlds: [new V3(0.6, 1.6, 19), new V3(0, 0.5, -1.5)],
   earth: [new V3(-4.4, 1.2, 7.4), new V3(-8.2, 0, 0)], moon: [new V3(-0.2, 2.0, 1.0), new V3(-1.6, 1.5, -2.2)], mars: [new V3(5.6, 0.4, -0.4), new V3(8.2, -0.4, -5)],
   deep: [new V3(3, 5, 26), new V3(0, 0, -4)], final: [new V3(-2, 3, 22), new V3(0, 0, -2)],
 };
@@ -70,7 +70,7 @@ export function createSpace(canvas, { small = false, still = false } = {}) {
     frame(dt) {
       t += dt; const C = CAMS[key]; want[0].copy(C[0]); want[1].copy(C[1]);
       // on a tall screen the camera stands further back, so all three worlds fit
-      if (key === 'worlds') { const a = drag.yaw, r = want[0].length() * (w < h ? 2.3 : w < h * 1.3 ? 1.4 : 1); want[0].set(Math.sin(a) * r + 0.6 * Math.cos(a), 2.6 + drag.pitch * 14, Math.cos(a) * r); }
+      if (key === 'worlds') { const a = drag.yaw, r = want[0].length() * (w < h ? 2.3 : w < h * 1.3 ? 1.4 : 1); want[0].set(Math.sin(a) * r + 0.6 * Math.cos(a), 1.6 + drag.pitch * 14, Math.cos(a) * r); }
       if (trip) { trip.u = Math.min(1, (performance.now() - trip.t0) / 1500); const k = ease(trip.u), T = CAMS[trip.id]; camera.position.lerpVectors(from[0], T[0], k); look.lerpVectors(from[1], T[1], k); if (trip.u >= 1) { const d = trip.done; trip = null; d && d(); } }
       else { const k = still ? 1 : 1 - Math.exp(-dt * 2.2); camera.position.lerp(want[0], k); look.lerp(want[1], k); }
       camera.lookAt(look);
